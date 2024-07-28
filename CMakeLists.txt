@@ -12,6 +12,7 @@ set(CMAKE_CXX_CPPCHECK "cppcheck;--error-exitcode=1;--enable=style")
 find_package(lua CONFIG REQUIRED)
 
 add_library(openge
+    src/Exception.cpp
     src/Lua.cpp
 )
 

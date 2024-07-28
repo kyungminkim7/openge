@@ -2,7 +2,8 @@ find_package(GTest REQUIRED CONFIG)
 include(GoogleTest)
 
 add_executable(openge_test
-    src/test_lua.cpp
+    src/TestException.cpp
+    src/TestLua.cpp
 )
 
 target_link_libraries(openge_test
