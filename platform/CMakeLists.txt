@@ -1,0 +1,5 @@
+if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+    add_subdirectory(android)
+else()
+    add_subdirectory(qt)
+endif()
