@@ -2,6 +2,6 @@
 
 namespace ge {
 
-QtShader::QtShader(Shader::ShaderType type) {}
+QtShader::QtShader(Shader::ShaderType) {}
 
 }  // namespace ge

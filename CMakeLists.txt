@@ -4,7 +4,7 @@ project(openge CXX)
 #=============================
 # Static Analysis
 #=============================
-set(CMAKE_CXX_CPPCHECK "cppcheck;--error-exitcode=1;--enable=style")
+set(CMAKE_CXX_CPPCHECK "cppcheck;--error-exitcode=1;--enable=performance,portability;--quiet")
 
 #=============================
 # Build
@@ -21,7 +21,7 @@ target_include_directories(openge PUBLIC
 )
 
 target_link_libraries(openge
-    PRIVATE
+    PUBLIC
         lua::lua
 )
 
@@ -38,16 +38,7 @@ add_subdirectory(test)
 #=============================
 find_package(Doxygen)
 
-set(DOXYGEN_AUTOLINK_SUPPORT YES)
-set(DOXYGEN_CALL_GRAPH YES)
-set(DOXYGEN_CLASS_GRAPH YES)
-set(DOXYGEN_COLLABORATION_GRAPH YES)
-set(DOXYGEN_DOT_UML_DETAILS YES)
-set(DOXYGEN_DOT_WRAP_THRESHOLD 100)
-set(DOXYGEN_GENERATE_HTML YES)
-set(DOXYGEN_MARKDOWN_SUPPORT YES)
 set(DOXYGEN_QUIET YES)
-set(DOXYGEN_UML_LOOK YES)
 set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
 set(DOXYGEN_WARN_AS_ERROR YES)
 
