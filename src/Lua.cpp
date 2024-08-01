@@ -1,6 +1,10 @@
 #include <openge/Lua.hpp>
 
+#include <stdexcept>
+
 #include <lua.hpp>
+
+#include <openge/Exception.hpp>
 
 namespace ge {
 
@@ -10,13 +14,27 @@ Lua::~Lua() {
     lua_close(state);
 }
 
-void Lua::loadScript(std::string_view script) {
-    luaL_loadstring(state, script.data());
-    lua_pcall(state, 0, 0, 0);
+void Lua::execute(std::string_view script) {
+    if (luaL_loadstring(state, script.data()) != LUA_OK) {
+        throw BuildError(popString());
+    }
+
+    executeChunk();
+}
+
+void Lua::executeChunk() {
+    if (lua_pcall(state, 0, 0, 0) != LUA_OK) {
+        throw std::runtime_error(popString());
+    }
 }
 
 std::string Lua::getGlobalString(std::string_view name) {
-    lua_getglobal(state, name.data());
+    const auto type = lua_getglobal(state, name.data());
+
+    if (type != LUA_TSTRING) {
+        throw std::invalid_argument(popString());
+    }
+
     return popString();
 }
 

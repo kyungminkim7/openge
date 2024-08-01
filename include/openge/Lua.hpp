@@ -16,16 +16,12 @@ class Lua : public ScriptingEngineInterface {
     Lua();
     ~Lua() override;
 
-    /**
-     * Loads and compiles the given string as an embedded script.
-     * 
-     * @param script Inline script code to load and execute.
-     */
-    void loadScript(std::string_view script);
+    void execute(std::string_view script) override;
 
     std::string getGlobalString(std::string_view name) override;
 
  private:
+    void executeChunk();
     std::string popString();
 
     lua_State * const state;

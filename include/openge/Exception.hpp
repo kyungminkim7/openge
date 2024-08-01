@@ -11,7 +11,7 @@ namespace ge {
 class Error : public std::exception {
  public:
     /**
-     * Constructs a new Error with the given message.
+     * Constructs an Error with the given message.
      *
      * @param whatArg Explanatory error message.
      */
@@ -26,6 +26,19 @@ class Error : public std::exception {
 
  private:
     std::string whatArg;
+};
+
+/**
+ * Represents errors during compilation/linking of shaders/scripts.
+ */
+class BuildError : public Error {
+ public:
+    /**
+     * Constructs a BuildError with the given message.
+     *
+     * @param whatArg Explanatory error message.
+     */
+    explicit BuildError(const std::string &whatArg);
 };
 
 }  // namespace ge
