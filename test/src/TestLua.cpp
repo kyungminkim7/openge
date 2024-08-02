@@ -81,3 +81,14 @@ TEST_F(LuaGetGlobalStringIncorrectType, ReturnsErrorMessage) {
                     HasSubstr(LuaGetGlobalStringIncorrectType::ASSIGNED_VALUE));
     }
 }
+
+TEST(LuaSetGlobalString, SetsGlobalVariable) {
+    Lua lua;
+    lua.execute("x = \"original\"");
+
+    const auto NAME = "x";
+    const auto VALUE = "modified";
+    lua.setGlobal(NAME, VALUE);
+
+    ASSERT_THAT(lua.getGlobalString(NAME), StrEq(VALUE));
+}

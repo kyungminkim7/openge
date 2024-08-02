@@ -44,4 +44,9 @@ std::string Lua::popString() {
     return result;
 }
 
+void Lua::setGlobal(std::string_view name, std::string_view value) {
+    lua_pushstring(state, value.data());
+    lua_setglobal(state, name.data());
+}
+
 }  // namespace ge

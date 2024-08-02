@@ -20,6 +20,8 @@ class Lua : public ScriptingEngineInterface {
 
     std::string getGlobalString(std::string_view name) override;
 
+    void setGlobal(std::string_view name, std::string_view value) override;
+
  private:
     void executeChunk();
     std::string popString();
