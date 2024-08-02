@@ -2,8 +2,6 @@
 
 #include <stdexcept>
 
-#include <lua.hpp>
-
 #include <openge/Exception.hpp>
 
 namespace ge {
@@ -14,7 +12,7 @@ Lua::~Lua() {
     lua_close(state);
 }
 
-void Lua::execute(std::string_view script) {
+void Lua::loadScript(std::string_view script) {
     if (luaL_loadstring(state, script.data()) != LUA_OK) {
         throw BuildError(popString());
     }

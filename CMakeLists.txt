@@ -21,7 +21,7 @@ target_include_directories(openge PUBLIC
 )
 
 target_link_libraries(openge
-    PRIVATE
+    PUBLIC
         lua::lua
 )
 

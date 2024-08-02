@@ -17,13 +17,13 @@ class LuaScriptInvalidSyntax : public testing::Test {
 };
 
 TEST_F(LuaScriptInvalidSyntax, RaisesException) {
-    ASSERT_THROW(lua.execute(LuaScriptInvalidSyntax::UNFINISHED_STRING_SCRIPT),
+    ASSERT_THROW(lua.loadScript(LuaScriptInvalidSyntax::UNFINISHED_STRING_SCRIPT),
                  BuildError);
 }
 
 TEST_F(LuaScriptInvalidSyntax, ReturnsErrorMessage) {
     try {
-        lua.execute(LuaScriptInvalidSyntax::UNFINISHED_STRING_SCRIPT);
+        lua.loadScript(LuaScriptInvalidSyntax::UNFINISHED_STRING_SCRIPT);
         FAIL() << "Invalid script failed to throw build error";
     } catch (const BuildError &e) {
         ASSERT_THAT(e.what(), HasSubstr("unfinished string"));
@@ -37,13 +37,13 @@ class LuaScriptRuntimeError : public testing::Test {
 };
 
 TEST_F(LuaScriptRuntimeError, RaisesException) {
-    ASSERT_THROW(lua.execute(LuaScriptRuntimeError::UNINITIALIZED_VAR_SCRIPT),
+    ASSERT_THROW(lua.loadScript(LuaScriptRuntimeError::UNINITIALIZED_VAR_SCRIPT),
                  std::runtime_error);
 }
 
 TEST_F(LuaScriptRuntimeError, ReturnsErrorMessage) {
     try {
-        lua.execute(LuaScriptRuntimeError::UNINITIALIZED_VAR_SCRIPT);
+        lua.loadScript(LuaScriptRuntimeError::UNINITIALIZED_VAR_SCRIPT);
         FAIL() << "Invalid script failed to throw runtime error";
     } catch (const std::runtime_error &e) {
         ASSERT_THAT(e.what(), HasSubstr("nil"));
@@ -52,7 +52,7 @@ TEST_F(LuaScriptRuntimeError, ReturnsErrorMessage) {
 
 TEST(LuaGetGlobalString, ReturnsValueSetInScript) {
     Lua lua;
-    lua.execute("var = \"str\"");
+    lua.loadScript("var = \"str\"");
 
     ASSERT_THAT(lua.getGlobalString("var"),
                 StrEq("str"));
@@ -61,7 +61,7 @@ TEST(LuaGetGlobalString, ReturnsValueSetInScript) {
 class LuaGetGlobalStringIncorrectType : public testing::Test {
  protected:
     LuaGetGlobalStringIncorrectType() {
-        lua.execute(LuaGetGlobalStringIncorrectType::ASSIGN_NUM_SCRIPT);
+        lua.loadScript(LuaGetGlobalStringIncorrectType::ASSIGN_NUM_SCRIPT);
     }
 
     static constexpr auto ASSIGN_NUM_SCRIPT = "x = 3";
@@ -84,7 +84,7 @@ TEST_F(LuaGetGlobalStringIncorrectType, ReturnsErrorMessage) {
 
 TEST(LuaSetGlobalString, SetsGlobalVariable) {
     Lua lua;
-    lua.execute("x = \"original\"");
+    lua.loadScript("x = \"original\"");
 
     const auto NAME = "x";
     const auto VALUE = "modified";
