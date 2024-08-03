@@ -23,12 +23,21 @@ class Lua {
     void loadScript(std::string_view script);
 
     /**
-     * Get the value of a global string variable in the script.
+     * Get the value of a global variable in the script.
      *
      * @param name Global variable name.
      * @return Global variable value.
      */
-    std::string getGlobalString(std::string_view name);
+    template<typename T>
+    T getGlobal(std::string_view name);
+
+    /**
+     * Set the value of a global c-string variable in the script.
+     *
+     * @param name Name of the global variable to set.
+     * @param value Value to set the global variable to.
+     */
+    void setGlobal(std::string_view name, const char *value);
 
     /**
      * Set the value of a global string variable in the script.
@@ -36,11 +45,48 @@ class Lua {
      * @param name Name of the global variable to set.
      * @param value Value to set the global variable to.
      */
-    void setGlobal(std::string_view name, std::string_view value);
+    void setGlobal(std::string_view name, const std::string &value);
+
+    /**
+     * Set the value of a global bool variable in the script.
+     *
+     * @param name Name of the global variable to set.
+     * @param value Value to set the global variable to.
+     */
+    void setGlobal(std::string_view name, bool value);
+
+    /**
+     * Set the value of a global float variable in the script.
+     *
+     * @param name Name of the global variable to set.
+     * @param value Value to set the global variable to.
+     */
+    void setGlobal(std::string_view name, float value);
+
+    /**
+     * Set the value of a global double variable in the script.
+     *
+     * @param name Name of the global variable to set.
+     * @param value Value to set the global variable to.
+     */
+    void setGlobal(std::string_view name, double value);
+
+    /**
+     * Set the value of a global int variable in the script.
+     *
+     * @param name Name of the global variable to set.
+     * @param value Value to set the global variable to.
+     */
+    void setGlobal(std::string_view name, int value);
 
  private:
     void executeChunk();
-    std::string popString();
+
+    template<typename T>
+    T pop();
+
+    template<typename T>
+    T top() const;
 
     lua_State * const state;
 };

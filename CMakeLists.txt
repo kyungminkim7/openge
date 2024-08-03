@@ -4,7 +4,7 @@ project(openge CXX)
 #=============================
 # Static Analysis
 #=============================
-set(CMAKE_CXX_CPPCHECK "cppcheck;--error-exitcode=1;--enable=style")
+set(CMAKE_CXX_CPPCHECK "cppcheck;--error-exitcode=1;--enable=performance,portability;--quiet")
 
 #=============================
 # Build
