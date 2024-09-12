@@ -64,6 +64,6 @@ include(GNUInstallDirs)
 install(TARGETS openge)
 
 install(
-    DIRECTORY include/ mock/
+    DIRECTORY include/
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )

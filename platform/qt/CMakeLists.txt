@@ -1,8 +1,7 @@
 find_package(Qt6 REQUIRED COMPONENTS OpenGL)
 
 target_sources(openge PRIVATE
-    src/QtOpenGLFactory.cpp
-    src/QtShader.cpp
+    src/GLShaderProgram.cpp
 )
 
 target_include_directories(openge PUBLIC
@@ -10,3 +9,13 @@ target_include_directories(openge PUBLIC
 )
 
 target_link_libraries(openge PUBLIC Qt6::OpenGL)
+
+#=============================
+# Install
+#=============================
+include(GNUInstallDirs)
+
+install(
+    DIRECTORY include/
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)
