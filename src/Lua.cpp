@@ -97,8 +97,8 @@ Lua::~Lua() {
     lua_close(state);
 }
 
-void Lua::load(std::string_view script) {
-    if (luaL_loadstring(state, script.data()) != LUA_OK) {
+void Lua::load(const char *script) {
+    if (luaL_loadstring(state, script) != LUA_OK) {
         throw BuildError(pop<std::string>());
     }
 
@@ -116,8 +116,8 @@ std::size_t Lua::getStackSize() const {
 }
 
 template<typename T>
-T Lua::getGlobal(std::string_view name) {
-    const auto type = lua_getglobal(state, name.data());
+T Lua::getGlobal(const char *name) {
+    const auto type = lua_getglobal(state, name);
 
     if (type != LuaTypeValue<T>) {
         throw std::invalid_argument(pop<std::string>());
@@ -126,11 +126,11 @@ T Lua::getGlobal(std::string_view name) {
     return pop<T>();
 }
 
-template std::string Lua::getGlobal<std::string>(std::string_view name);
-template bool Lua::getGlobal<bool>(std::string_view name);
-template float Lua::getGlobal<float>(std::string_view name);
-template double Lua::getGlobal<double>(std::string_view name);
-template int Lua::getGlobal<int>(std::string_view name);
+template std::string Lua::getGlobal<std::string>(const char *name);
+template bool Lua::getGlobal<bool>(const char *name);
+template float Lua::getGlobal<float>(const char *name);
+template double Lua::getGlobal<double>(const char *name);
+template int Lua::getGlobal<int>(const char *name);
 
 void Lua::push(const char *value) {
     lua_pushstring(state, value);
@@ -169,8 +169,8 @@ template float Lua::popElement<float>();
 template double Lua::popElement<double>();
 template int Lua::popElement<int>();
 
-void Lua::popTable(std::string_view table) {
-    const auto type = lua_getglobal(state, table.data());
+void Lua::popTable(const char *table) {
+    const auto type = lua_getglobal(state, table);
     if (type != LUA_TTABLE) {
         throw std::invalid_argument(pop<std::string>());
     }

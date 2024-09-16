@@ -2,7 +2,6 @@
 
 #include <cstddef>
 #include <string>
-#include <string_view>
 #include <type_traits>
 
 #include <lua.hpp>
@@ -22,7 +21,7 @@ class Lua {
      * 
      * @param script Inline script code to load and execute.
      */
-    void load(std::string_view script);
+    void load(const char *script);
 
     /**
      * Gets the number of elements on the Lua stack.
@@ -38,7 +37,7 @@ class Lua {
      * @return Global variable value.
      */
     template<typename T>
-    T getGlobal(std::string_view name);
+    T getGlobal(const char *name);
 
     /**
      * Set the value of a global variable in the script.
@@ -47,7 +46,7 @@ class Lua {
      * @param value Value to set the global variable to.
      */
     template<typename T>
-    void setGlobal(std::string_view name, T value);
+    void setGlobal(const char *name, T value);
 
     /**
      * Gets the entry value of a global table.
@@ -57,7 +56,7 @@ class Lua {
      * @return Table entry value.
      */
     template<typename T>
-    T getTableEntry(std::string_view table, std::string_view key);
+    T getTableEntry(const char *table, const char *key);
 
     /**
      * Gets the value of an array element.
@@ -67,7 +66,7 @@ class Lua {
      * @return Array element value.
      */
     template<typename T>
-    T getTableEntry(std::string_view array, std::size_t index);
+    T getTableEntry(const char *array, std::size_t index);
 
     /**
      * Sets the entry value of a global table.
@@ -77,7 +76,7 @@ class Lua {
      * @param value Table entry value.
      */
     template<typename T>
-    void setTableEntry(std::string_view table, std::string_view key, T value);
+    void setTableEntry(const char *table, const char *key, T value);
 
     /**
      * Sets the value of an array element.
@@ -87,7 +86,7 @@ class Lua {
      * @param value Array element value to set.
      */
     template<typename T>
-    void setTableEntry(std::string_view array, std::size_t index, T value);
+    void setTableEntry(const char *array, std::size_t index, T value);
 
     /**
      * Call a function in the Lua script.
@@ -95,7 +94,7 @@ class Lua {
      * @return return value of the Lua function.
      */
     template<typename ReturnType, typename... Types>
-    ReturnType call(std::string_view name, Types... args);
+    ReturnType call(const char *name, Types... args);
 
     /**
      * Push values onto the Lua stack.
@@ -164,7 +163,7 @@ class Lua {
     template<typename Container>
     Container popContainer();
 
-    void popTable(std::string_view table);
+    void popTable(const char *table);
 
     template<typename T>
     T top() const;

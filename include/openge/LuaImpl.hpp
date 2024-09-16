@@ -7,14 +7,14 @@
 namespace ge {
 
 template<typename T>
-void Lua::setGlobal(std::string_view name, T value) {
+void Lua::setGlobal(const char *name, T value) {
     push(value);
-    lua_setglobal(state, name.data());
+    lua_setglobal(state, name);
 }
 
 template<typename ReturnType, typename... Types>
-ReturnType Lua::call(std::string_view name, Types... args) {
-    const auto type = lua_getglobal(state, name.data());
+ReturnType Lua::call(const char *name, Types... args) {
+    const auto type = lua_getglobal(state, name);
 
     if (type != LUA_TFUNCTION) {
         throw std::invalid_argument(pop<std::string>());
@@ -60,16 +60,16 @@ void Lua::push(T arg, Types... args) {
 }
 
 template<typename T>
-T Lua::getTableEntry(std::string_view table, std::string_view key) {
+T Lua::getTableEntry(const char *table, const char *key) {
     popTable(table);
-    lua_getfield(state, -1, key.data());
+    lua_getfield(state, -1, key);
     const auto value = pop<T>();
     lua_pop(state, 1);
     return value;
 }
 
 template<typename T>
-T Lua::getTableEntry(std::string_view array, std::size_t index) {
+T Lua::getTableEntry(const char *array, std::size_t index) {
     if (index == 0) {
         throw std::out_of_range("Lua array indexes start from 1");
     }
@@ -82,15 +82,15 @@ T Lua::getTableEntry(std::string_view array, std::size_t index) {
 }
 
 template<typename T>
-void Lua::setTableEntry(std::string_view table, std::string_view key, T value) {
+void Lua::setTableEntry(const char *table, const char *key, T value) {
     popTable(table);
     push(value);
-    lua_setfield(state, -2, key.data());
+    lua_setfield(state, -2, key);
     lua_pop(state, 1);
 }
 
 template<typename T>
-void Lua::setTableEntry(std::string_view array, std::size_t index, T value) {
+void Lua::setTableEntry(const char *array, std::size_t index, T value) {
     if (index == 0) {
         throw std::out_of_range("Lua array indexes start from 1");
     }

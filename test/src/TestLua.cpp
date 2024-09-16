@@ -369,7 +369,7 @@ TEST_F(LuaGetArrayElement, CleansTemporaryVariablesFromStack) {
 }
 
 TEST_F(LuaGetArrayElement, ThrowsOnZeroIndex) {
-    ASSERT_THROW(lua.getTableEntry<int>(ARRAY, 0),
+    ASSERT_THROW(lua.getTableEntry<int>(ARRAY, 0lu),
                  std::out_of_range);
 }
 
@@ -399,6 +399,6 @@ TEST_F(LuaSetArrayElement, CleansTemporaryVariablesFromStack) {
 }
 
 TEST_F(LuaSetArrayElement, ThrowsOnZeroIndex) {
-    ASSERT_THROW(lua.setTableEntry<int>(ARRAY, 0, VALUE),
+    ASSERT_THROW(lua.setTableEntry<int>(ARRAY, 0lu, VALUE),
                  std::out_of_range);
 }
