@@ -14,8 +14,8 @@ void GLShaderProgram::addShader(std::shared_ptr<GLShader> shader) {
 }
 
 void GLShaderProgram::addShaderFromSourceFile(GLShader::ShaderType type,
-                                              const std::string &source) {
-    if (!program.addShaderFromSourceFile(type, source.c_str())) {
+                                              const char *source) {
+    if (!program.addShaderFromSourceFile(type, source)) {
         throw BuildError(program.log().toStdString());
     }
 }
@@ -36,15 +36,20 @@ void GLShaderProgram::release() {
     program.release();
 }
 
-void GLShaderProgram::enableAttributeArray(int location) {
-    program.enableAttributeArray(location);
+void GLShaderProgram::enableAttributeArray(const char *name) {
+    program.enableAttributeArray(name);
 }
 
-void GLShaderProgram::setAttributeBuffer(int location, GLenum type,
+void GLShaderProgram::setAttributeBuffer(const char *name, GLenum type,
                                          int offset, int tupleSize,
                                          int stride) {
-    program.setAttributeBuffer(location, type,
+    program.setAttributeBuffer(name, type,
                                offset, tupleSize, stride);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      float x, float y, float z, float w) {
+    program.setUniformValue(name, x, y, z, w);
 }
 
 }  // namespace ge

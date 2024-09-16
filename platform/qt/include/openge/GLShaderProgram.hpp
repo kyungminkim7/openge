@@ -2,7 +2,6 @@
 
 #include <QOpenGLShaderProgram>
 #include <memory>
-#include <string>
 #include <vector>
 
 #include <openge/GLShader.hpp>
@@ -32,7 +31,7 @@ class GLShaderProgram {
      * @exception BuildError Failed to add shader.
      */
     void addShaderFromSourceFile(ge::GLShader::ShaderType type,
-                                 const std::string &source);
+                                 const char *source);
 
     /**
      * Links the shaders added to the program.
@@ -56,24 +55,36 @@ class GLShaderProgram {
     void release();
 
     /**
-     * Enables the vertex array at location in this shader program.
+     * Enables the vertex array by name in this shader program.
      *
-     * @param location Vertex array location.
+     * @param name Vertex array name.
      */
-    void enableAttributeArray(int location);
+    void enableAttributeArray(const char *name);
 
     /**
-     * Sets an array of vertex values on the attribute at location
+     * Sets an array of vertex values on the attribute by name
      * in this shader program.
      *
-     * @param location Vertex array location.
+     * @param name Vertex array name.
      * @param type Type of element in vertex array.
      * @param offset Start of values in currently bound vertex buffer.
      * @param tupleSize Number of components per vertex.
      * @param stride Number of bytes between vertices.
      */
-    void setAttributeBuffer(int location, GLenum type, int offset,
+    void setAttributeBuffer(const char *name, GLenum type, int offset,
                             int tupleSize, int stride = 0);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param x
+     * @param y
+     * @param z
+     * @param w
+     */
+    void setUniformValue(const char *name,
+                         float x, float y, float z, float w);
 
  private:
     using GLShaderPtr = std::shared_ptr<GLShader>;
