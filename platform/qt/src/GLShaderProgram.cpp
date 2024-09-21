@@ -47,9 +47,4 @@ void GLShaderProgram::setAttributeBuffer(const char *name, GLenum type,
                                offset, tupleSize, stride);
 }
 
-void GLShaderProgram::setUniformValue(const char *name,
-                                      float x, float y, float z, float w) {
-    program.setUniformValue(name, x, y, z, w);
-}
-
 }  // namespace ge

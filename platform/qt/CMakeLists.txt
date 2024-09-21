@@ -2,6 +2,7 @@ find_package(Qt6 REQUIRED COMPONENTS OpenGL)
 
 target_sources(openge PRIVATE
     src/GLShaderProgram.cpp
+    src/GLTexture.cpp
 )
 
 target_include_directories(openge PUBLIC

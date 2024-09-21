@@ -9,7 +9,7 @@
 namespace ge {
 
 /**
- * shader programs written in the OpenGL Shading Language (GLSL)
+ * Shader programs written in the OpenGL Shading Language (GLSL)
  * and in the OpenGL/ES Shading Language (GLSL/ES).
  */
 class GLShaderProgram {
@@ -78,13 +78,22 @@ class GLShaderProgram {
      * Sets the uniform value in the current context.
      *
      * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    template<typename T>
+    void setUniformValue(const char *name, T value);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
      * @param x
      * @param y
      * @param z
      * @param w
      */
-    void setUniformValue(const char *name,
-                         float x, float y, float z, float w);
+    template<typename T>
+    void setUniformValue(const char *name, T x, T y, T z, T w);
 
  private:
     using GLShaderPtr = std::shared_ptr<GLShader>;
@@ -94,3 +103,5 @@ class GLShaderProgram {
 };
 
 }  // namespace ge
+
+#include <openge/GLShaderProgramImpl.hpp>
