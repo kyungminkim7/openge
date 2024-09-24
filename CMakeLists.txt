@@ -30,8 +30,10 @@ add_subdirectory(platform)
 #=============================
 # Test
 #=============================
-enable_testing()
-add_subdirectory(test)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+    enable_testing()
+    add_subdirectory(test)
+endif()
 
 #=============================
 # Documentation

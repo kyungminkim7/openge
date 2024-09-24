@@ -1,5 +1,5 @@
 from conan import ConanFile
-from conan.tools.build import check_max_cppstd, check_min_cppstd
+from conan.tools.build import check_max_cppstd, check_min_cppstd, can_run
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
 
@@ -64,7 +64,9 @@ class OpenGERecipe(ConanFile):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
-        cmake.ctest()
+
+        if can_run(self):
+            cmake.ctest()
 
     def package(self):
         cmake = CMake(self)

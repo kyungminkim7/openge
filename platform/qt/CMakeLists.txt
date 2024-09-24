@@ -1,3 +1,5 @@
+MESSAGE("GOING QT PLATFORM")
+
 find_package(Qt6 REQUIRED COMPONENTS OpenGL)
 
 target_sources(openge PRIVATE
