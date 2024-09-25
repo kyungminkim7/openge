@@ -5,17 +5,15 @@
 
 namespace ge {
 
-void GLShaderProgram::addShader(std::shared_ptr<GLShader> shader) {
-    if (!program.addShader(shader.get())) {
-        throw BuildError(program.log().toStdString());
+void GLShaderProgram::create() {
+    if (!program.create()) {
+        throw BuildError("Failed to create shader program object.");
     }
-
-    shaders.emplace_back(std::move(shader));
 }
 
-void GLShaderProgram::addShaderFromSourceFile(GLShader::ShaderType type,
-                                              const char *source) {
-    if (!program.addShaderFromSourceFile(type, source)) {
+void GLShaderProgram::addShaderFromSourceFile(ge::GLShader::ShaderTypeBit type,
+                                              const char *filepath) {
+    if (!program.addShaderFromSourceFile(type, filepath)) {
         throw BuildError(program.log().toStdString());
     }
 }
