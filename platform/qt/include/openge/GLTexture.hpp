@@ -22,6 +22,9 @@ class GLTexture {
     /**
      * Creates an OpenGL texture object from an image file.
      *
+     * The file should be embedded using QRC in an assets directory
+     * and only the relative filepath from assets should be given.
+     *
      * @note This creates the underlying OpenGL texture object
      *       and requires a valid current OpenGL context.
      *

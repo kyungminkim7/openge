@@ -1,3 +1,4 @@
+#include <string>
 #include <utility>
 
 #include <openge/Exception.hpp>
@@ -13,7 +14,9 @@ void GLShaderProgram::create() {
 
 void GLShaderProgram::addShaderFromSourceFile(ge::GLShader::ShaderTypeBit type,
                                               const char *filepath) {
-    if (!program.addShaderFromSourceFile(type, filepath)) {
+    using namespace std::string_literals;
+    const auto asset = ":/assets/"s + filepath;
+    if (!program.addShaderFromSourceFile(type, asset.c_str())) {
         throw BuildError(program.log().toStdString());
     }
 }

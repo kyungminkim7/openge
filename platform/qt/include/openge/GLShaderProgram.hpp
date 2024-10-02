@@ -23,6 +23,9 @@ class GLShaderProgram {
      * Compiles source as a shader of the specified type and
      * adds it to this shader program.
      *
+     * The file should be embedded using QRC in an assets directory
+     * and only the relative filepath from assets should be given.
+     *
      * @param type Shader type to compile as.
      * @param filepath Shader source code filepath.
      * @exception BuildError Failed to add shader.
