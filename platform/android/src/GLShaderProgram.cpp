@@ -65,7 +65,7 @@ int GLShaderProgram::attributeLocation(const char *name) const {
     const auto location = glGetAttribLocation(program, name);
 
     if (location == -1) {
-        throw std::invalid_argument(name + " is and invalid attribute"s);
+        throw std::invalid_argument(name + " is an invalid attribute"s);
     }
 
     return location;
@@ -81,6 +81,22 @@ void GLShaderProgram::setAttributeBuffer(const char *name, GLenum type,
     glVertexAttribPointer(attributeLocation(name), tupleSize,
                           type, GL_FALSE, stride,
                           reinterpret_cast<void *>(offset));
+}
+
+int GLShaderProgram::uniformLocation(const char *name) const {
+    using namespace std::string_literals;
+
+    const auto location = glGetUniformLocation(program, name);
+
+    if (location == -1) {
+        throw std::invalid_argument(name + " is an invalid uniform"s);
+    }
+
+    return location;
+}
+
+void GLShaderProgram::setUniformValue(const char *name, GLint value) {
+    glUniform1i(uniformLocation(name), value);
 }
 
 }  // namespace ge

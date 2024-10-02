@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <ios>
 #include <system_error>
+#include <type_traits>
 
 #include <openge/Asset.hpp>
 #include <openge/AssetManager.hpp>
@@ -9,7 +10,7 @@ namespace ge {
 
 Asset::Asset(const char *filepath, Mode mode) :
     asset(AAssetManager_open(AssetManager::get(), filepath,
-                             static_cast<int>(mode))),
+                             static_cast<std::underlying_type_t<Mode>>(mode))),
     filepath(filepath) {
     if (asset == nullptr) {
         const auto errorCode =
@@ -21,6 +22,10 @@ Asset::Asset(const char *filepath, Mode mode) :
 
 Asset::~Asset() {
     AAsset_close(asset);
+}
+
+AAsset * Asset::get() {
+    return asset;
 }
 
 std::size_t Asset::getLength() const {
@@ -48,7 +53,7 @@ void Asset::read(void *buffer, std::size_t count) {
 
 std::size_t Asset::seek(std::size_t offset, Seek whence) {
     const auto position = AAsset_seek64(asset, offset,
-                                        static_cast<int>(whence));
+        static_cast<std::underlying_type_t<Seek>>(whence));
     if (position < 0) {
         const auto errorCode = std::make_error_code(std::errc::invalid_seek);
         const auto errorMessage = "Failed to seek offset in " + filepath;

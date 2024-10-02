@@ -5,12 +5,18 @@ target_sources(openge PRIVATE
     src/GLFunctions.cpp
     src/GLShader.cpp
     src/GLShaderProgram.cpp
+    src/GLTexture.cpp
     src/GLVertexArrayObject.cpp
+    src/Image.cpp
+    src/ImageDecoder.cpp
     src/Log.cpp
 )
 
-target_include_directories(openge PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+target_include_directories(openge
+    PUBLIC
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    PRIVATE
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
 )
 
 target_link_libraries(openge
@@ -18,7 +24,6 @@ target_link_libraries(openge
         android
         GLESv3
     PRIVATE
-        EGL
         log
 )
 

@@ -7,6 +7,7 @@
 #include <openge/Asset.hpp>
 #include <openge/Exception.hpp>
 #include <openge/GLShader.hpp>
+#include <openge/Log.hpp>
 
 namespace ge {
 
@@ -37,10 +38,15 @@ void GLShader::compileSourceCode(const char *source) {
 }
 
 void GLShader::compileSourceFile(const char *filepath) {
+    using namespace std::string_literals;
+
     Asset file(filepath, Asset::Mode::Buffer);
     std::vector<char> sourceCode(file.getLength());
     file.read(sourceCode.data(), sourceCode.size());
-    compileSourceCode(sourceCode.data());
+    std::string sourceCodeStr(sourceCode.cbegin(), sourceCode.cend());
+
+    Log::info("Compiling shader: "s + filepath);
+    compileSourceCode(sourceCodeStr.c_str());
 }
 
 GLuint GLShader::shaderId() const {

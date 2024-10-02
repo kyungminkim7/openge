@@ -93,6 +93,23 @@ class GLShaderProgram {
     void setAttributeBuffer(const char *name, GLenum type, int offset,
                             int tupleSize, int stride = 0);
 
+    /**
+     * Returns the location of the uniform variable within this
+     * shader program's parameter list.
+     *
+     * @param name Uniform variable name.
+     * @return Uniform location.
+     */
+    int uniformLocation(const char *name) const;
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    void setUniformValue(const char *name, GLint value);
+
  private:
     GLuint program;
 };

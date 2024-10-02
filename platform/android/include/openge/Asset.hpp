@@ -45,6 +45,13 @@ class Asset {
     ~Asset();
 
     /**
+     * Returns a pointer to the managed asset.
+     *
+     * @return Managed asset.
+     */
+    AAsset * get();
+
+    /**
      * Gets the total size of the asset.
      *
      * @return Asset size.

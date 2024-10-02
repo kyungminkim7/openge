@@ -52,7 +52,8 @@ class OpenGERecipe(ConanFile):
 
     def layout(self):
         cmake_layout(self)
-        self.cpp.source.includedirs += ["platform/qt/include"]
+        self.cpp.source.includedirs += ["platform/qt/include",
+                                        "platform/android/include"]
 
     def generate(self):
         deps = CMakeDeps(self)
@@ -74,3 +75,6 @@ class OpenGERecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["openge"]
+        if self.settings.os == "Android":
+            self.cpp_info.system_libs = ["GLESv3", "android",
+                                         "jnigraphics", "log"]
