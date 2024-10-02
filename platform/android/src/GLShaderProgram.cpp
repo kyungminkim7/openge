@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 
+#include <glm/gtc/type_ptr.hpp>
 #include <openge/Exception.hpp>
 #include <openge/GLShaderProgram.hpp>
 
@@ -97,6 +98,12 @@ int GLShaderProgram::uniformLocation(const char *name) const {
 
 void GLShaderProgram::setUniformValue(const char *name, GLint value) {
     glUniform1i(uniformLocation(name), value);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      const glm::mat4 &value) {
+    glUniformMatrix4fv(uniformLocation(name), 1, GL_FALSE,
+                       glm::value_ptr(value));
 }
 
 }  // namespace ge

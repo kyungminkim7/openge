@@ -9,6 +9,7 @@ set(CMAKE_CXX_CPPCHECK "cppcheck;--error-exitcode=1;--enable=performance,portabi
 #=============================
 # Build
 #=============================
+find_package(glm CONFIG REQUIRED)
 find_package(lua CONFIG REQUIRED)
 
 add_library(openge
@@ -22,6 +23,7 @@ target_include_directories(openge PUBLIC
 
 target_link_libraries(openge
     PUBLIC
+        glm::glm
         lua::lua
 )
 

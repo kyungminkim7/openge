@@ -44,7 +44,9 @@ class OpenGERecipe(ConanFile):
         self.tool_requires("doxygen/1.9.4")
 
     def requirements(self):
+        self.requires("glm/1.0.1", transitive_headers=True)
         self.requires("lua/5.4.7", transitive_headers=True)
+
         if not self.settings.os == "Android":
             self.requires("qt/6.4.2", transitive_headers=True)
 
@@ -52,8 +54,10 @@ class OpenGERecipe(ConanFile):
 
     def layout(self):
         cmake_layout(self)
-        self.cpp.source.includedirs += ["platform/qt/include",
-                                        "platform/android/include"]
+        if self.settings.os == "Android":
+            self.cpp.source.includedirs += ["platform/android/include"]
+        else:
+            self.cpp.source.includedirs += ["platform/qt/include"]
 
     def generate(self):
         deps = CMakeDeps(self)

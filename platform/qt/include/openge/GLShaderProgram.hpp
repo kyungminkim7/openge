@@ -2,6 +2,7 @@
 
 #include <QOpenGLShaderProgram>
 
+#include <glm/mat4x4.hpp>
 #include <openge/GLShader.hpp>
 
 namespace ge {
@@ -82,6 +83,14 @@ class GLShaderProgram {
      */
     template<typename T>
     void setUniformValue(const char *name, T value);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    void setUniformValue(const char *name, const glm::mat4 &value);
 
     /**
      * Sets the uniform value in the current context.

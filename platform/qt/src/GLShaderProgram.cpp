@@ -1,6 +1,8 @@
+#include <QMatrix4x4>
 #include <string>
 #include <utility>
 
+#include <glm/gtc/type_ptr.hpp>
 #include <openge/Exception.hpp>
 #include <openge/GLShaderProgram.hpp>
 
@@ -46,6 +48,12 @@ void GLShaderProgram::setAttributeBuffer(const char *name, GLenum type,
                                          int stride) {
     program.setAttributeBuffer(name, type,
                                offset, tupleSize, stride);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      const glm::mat4 &value) {
+    program.setUniformValue(name,
+        QMatrix4x4(glm::value_ptr(value)).transposed());
 }
 
 }  // namespace ge
