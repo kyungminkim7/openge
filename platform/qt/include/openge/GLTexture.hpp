@@ -10,6 +10,11 @@ namespace ge {
 class GLTexture {
  public:
     /**
+     * Options for controlling mipmap generation;
+     */
+    using MipMapGeneration = QOpenGLTexture::MipMapGeneration;
+
+    /**
      * Texture filtering parameters.
      */
     using Filter = QOpenGLTexture::Filter;
@@ -29,10 +34,10 @@ class GLTexture {
      *       and requires a valid current OpenGL context.
      *
      * @param filepath Image filepath to create a texture from.
-     * @param generateMipMaps Generate chain of mipmaps.
+     * @param genMipMaps Generate chain of mipmaps.
      */
     explicit GLTexture(const char *filepath,
-                       bool generateMipMaps = true);
+        MipMapGeneration genMipMaps = MipMapGeneration::GenerateMipMaps);
 
     /**
      * Binds this texture to a texture unit ready for rendering.

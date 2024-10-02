@@ -10,6 +10,14 @@ namespace ge {
 class GLTexture {
  public:
     /**
+     * Options for controlling mipmap generation;
+     */
+    enum class MipMapGeneration {
+        GenerateMipMaps,
+        DontGenerateMipMaps
+    };
+
+    /**
      * Texture target.
      */
     enum class Target: GLenum {
@@ -52,10 +60,10 @@ class GLTexture {
      *       and requires a valid current OpenGL context.
      *
      * @param filepath Image filepath to create a texture from.
-     * @param generateMipMaps Generate chain of mipmaps.
+     * @param genMipMaps Generate chain of mipmaps.
      */
     explicit GLTexture(const char *filepath,
-                       bool generateMipMaps = true);
+        MipMapGeneration genMipMaps = MipMapGeneration::GenerateMipMaps);
 
     ~GLTexture();
 

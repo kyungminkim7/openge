@@ -5,7 +5,7 @@
 
 namespace ge {
 
-GLTexture::GLTexture(const char *filepath, bool generateMipMaps) :
+GLTexture::GLTexture(const char *filepath, MipMapGeneration genMipMaps) :
     target(static_cast<std::underlying_type_t<Target>>(Target::Target2D)) {
     Image image(filepath);
     image.mirror();
@@ -15,7 +15,7 @@ GLTexture::GLTexture(const char *filepath, bool generateMipMaps) :
     glTexImage2D(target, 0, GL_RGBA, image.width(), image.height(),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
 
-    if (generateMipMaps) {
+    if (genMipMaps == MipMapGeneration::GenerateMipMaps) {
         glGenerateMipmap(target);
     }
 }

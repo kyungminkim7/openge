@@ -7,10 +7,9 @@ namespace ge {
 
 using namespace std::string_literals;
 
-GLTexture::GLTexture(const char *filepath, bool generateMipMaps) :
+GLTexture::GLTexture(const char *filepath, MipMapGeneration genMipMaps) :
     texture(QImage((":/assets/"s + filepath).c_str()).mirrored(),
-            generateMipMaps ? QOpenGLTexture::GenerateMipMaps :
-                              QOpenGLTexture::DontGenerateMipMaps) { }
+            genMipMaps) {}
 
 void GLTexture::bind(unsigned int unit) {
     texture.bind(unit);
