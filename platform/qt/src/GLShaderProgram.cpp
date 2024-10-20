@@ -1,5 +1,4 @@
 #include <QMatrix4x4>
-#include <string>
 #include <utility>
 
 #include <glm/gtc/type_ptr.hpp>
@@ -16,9 +15,7 @@ void GLShaderProgram::create() {
 
 void GLShaderProgram::addShaderFromSourceFile(ge::GLShader::ShaderTypeBit type,
                                               const char *filepath) {
-    using namespace std::string_literals;
-    const auto asset = ":/assets/"s + filepath;
-    if (!program.addShaderFromSourceFile(type, asset.c_str())) {
+    if (!program.addShaderFromSourceFile(type, filepath)) {
         throw BuildError(program.log().toStdString());
     }
 }

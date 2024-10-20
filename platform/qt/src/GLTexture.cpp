@@ -1,14 +1,11 @@
 #include <QImage>
-#include <string>
 
 #include <openge/GLTexture.hpp>
 
 namespace ge {
 
-using namespace std::string_literals;
-
 GLTexture::GLTexture(const char *filepath, MipMapGeneration genMipMaps) :
-    texture(QImage((":/assets/"s + filepath).c_str()).mirrored(),
+    texture(QImage(filepath).mirrored(),
             genMipMaps) {}
 
 void GLTexture::bind(unsigned int unit) {
