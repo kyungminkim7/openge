@@ -2,6 +2,7 @@
 
 #include <ostream>
 
+#include <glm/fwd.hpp>
 #include <glm/gtx/string_cast.hpp>
 
 namespace glm {
