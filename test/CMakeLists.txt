@@ -3,7 +3,17 @@ include(GoogleTest)
 
 add_executable(openge_test
     src/TestException.cpp
+    src/TestGameObject.cpp
     src/TestLua.cpp
+    src/TestTransform.cpp
+)
+
+target_include_directories(openge_test PRIVATE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+)
+
+target_compile_definitions(openge_test PRIVATE
+    GLM_ENABLE_EXPERIMENTAL
 )
 
 target_link_libraries(openge_test

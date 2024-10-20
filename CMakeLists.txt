@@ -13,8 +13,13 @@ find_package(glm CONFIG REQUIRED)
 find_package(lua CONFIG REQUIRED)
 
 add_library(openge
+    src/Component.cpp
+    src/CoordinateSystem.cpp
     src/Exception.cpp
+    src/GameObject.cpp
     src/Lua.cpp
+    src/Mesh.cpp
+    src/Transform.cpp
 )
 
 target_include_directories(openge PUBLIC
