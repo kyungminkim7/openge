@@ -53,6 +53,7 @@ Image::Image(const char *filepath) : numChannels(4) {
 
 Image::Image(int imageWidth, int imageHeight, Format imageFormat) :
     numChannels(getNumChannels(imageFormat)),
+    image(numChannels * imageWidth * imageHeight),
     imageWidth(imageWidth), imageHeight(imageHeight) { }
 
 std::uint8_t * Image::bits() {

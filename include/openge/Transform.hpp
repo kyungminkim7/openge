@@ -25,8 +25,10 @@ class Transform : public Component {
  public:
     /**
      * Construct a transform.
+     *
+     * @param gameObject Game object this transform is attached to.
      */
-    explicit Transform(const std::shared_ptr<GameObject> &gameObject = nullptr);
+    explicit Transform(std::shared_ptr<GameObject> gameObject = nullptr);
 
     /**
      * Returns a normalized vector representing the forward

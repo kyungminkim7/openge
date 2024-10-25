@@ -1,27 +1,14 @@
 #include <utility>
 
 #include <openge/ColorConstants.hpp>
-#include <openge/Image.hpp>
 #include <openge/Material.hpp>
 #include <openge/RenderPipeline.hpp>
-
-namespace {
-
-std::shared_ptr<ge::GLTexture> createDefaultTexture() {
-    ge::Image image(1, 1, ge::Image::Format::Format_RGBA8888);
-    image.fill(ge::ColorConstants::WHITE);
-    return std::make_shared<ge::GLTexture>(image);
-}
-
-}  // namespace
 
 namespace ge {
 
 Material::Material(std::shared_ptr<GLShaderProgram> shaderProgram) :
     shaderProgram(std::move(shaderProgram)),
-    color(ColorConstants::WHITE) {
-    addTexture(createDefaultTexture());
-}
+    color(ColorConstants::WHITE) { }
 
 void Material::addTexture(TexturePtr texture) {
     const int textureUnit = textures.size();

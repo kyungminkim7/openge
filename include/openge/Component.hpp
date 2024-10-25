@@ -16,7 +16,7 @@ class Component {
      *
      * @param gameObject Game object this component is attached to.
      */
-    explicit Component(const std::shared_ptr<GameObject> &gameObject);
+    explicit Component(std::shared_ptr<GameObject> gameObject);
 
  protected:
     /**

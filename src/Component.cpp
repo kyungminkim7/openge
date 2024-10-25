@@ -2,7 +2,7 @@
 
 namespace ge {
 
-Component::Component(const std::shared_ptr<GameObject> &gameObject) :
+Component::Component(std::shared_ptr<GameObject> gameObject) :
     gameObject(gameObject) {}
 
 std::shared_ptr<GameObject> Component::getGameObject() {

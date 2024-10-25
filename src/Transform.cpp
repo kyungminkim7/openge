@@ -1,3 +1,5 @@
+#include <utility>
+
 #include <glm/ext/quaternion_transform.hpp>
 #include <glm/geometric.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -6,8 +8,8 @@
 
 namespace ge {
 
-Transform::Transform(const std::shared_ptr<GameObject> &gameObject) :
-    Component(gameObject),
+Transform::Transform(std::shared_ptr<GameObject> gameObject) :
+    Component(std::move(gameObject)),
     scale{1.0f}, position{ 0.0f }, rotation{ glm::identity<glm::quat>() }  {}
 
 glm::vec3 Transform::getForward() const {
