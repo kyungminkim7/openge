@@ -5,11 +5,8 @@
 
 namespace ge {
 
-GLTexture::GLTexture(const char *filepath, MipMapGeneration genMipMaps) :
+GLTexture::GLTexture(const Image &image, MipMapGeneration genMipMaps) :
     target(static_cast<std::underlying_type_t<Target>>(Target::Target2D)) {
-    Image image(filepath);
-    image.mirror();
-
     glGenTextures(1, &texture);
     glBindTexture(target, texture);
     glTexImage2D(target, 0, GL_RGBA, image.width(), image.height(),

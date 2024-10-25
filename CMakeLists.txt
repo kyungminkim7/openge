@@ -4,7 +4,8 @@ project(openge CXX)
 #=============================
 # Static Analysis
 #=============================
-set(CMAKE_CXX_CPPCHECK "cppcheck;--error-exitcode=1;--enable=performance,portability;--quiet")
+set(CMAKE_CXX_CPPCHECK
+    "cppcheck;--error-exitcode=1;--enable=performance,portability")
 
 #=============================
 # Build
@@ -12,12 +13,39 @@ set(CMAKE_CXX_CPPCHECK "cppcheck;--error-exitcode=1;--enable=performance,portabi
 find_package(glm CONFIG REQUIRED)
 find_package(lua CONFIG REQUIRED)
 
+# Configure built-in shaders
+if(CMAKE_SYSTEM_NAME STREQUAL "Android")
+    set(GLSL_VERSION "320 es")
+
+    string(JOIN "\n" GLSL_PRECISION
+           "precision mediump float;"
+           "precision mediump sampler2DShadow;")
+else()
+    set(GLSL_VERSION "330 core")
+endif()
+
+configure_file(shader/Standard.frag.in
+               shader/Standard.frag)
+
+configure_file(shader/Standard.vert.in
+               shader/Standard.vert)
+
+file(READ "${CMAKE_CURRENT_BINARY_DIR}/shader/Standard.frag" STANDARD_FRAG)
+file(READ "${CMAKE_CURRENT_BINARY_DIR}/shader/Standard.vert" STANDARD_VERT)
+
+configure_file(src/RenderPipeline.cpp.in
+               src/RenderPipeline.cpp)
+
+# OpenGE library
 add_library(openge
+    "${CMAKE_CURRENT_BINARY_DIR}/src/RenderPipeline.cpp"
+    src/ColorConstants.cpp
     src/Component.cpp
     src/CoordinateSystem.cpp
     src/Exception.cpp
     src/GameObject.cpp
     src/Lua.cpp
+    src/Material.cpp
     src/Mesh.cpp
     src/Transform.cpp
 )

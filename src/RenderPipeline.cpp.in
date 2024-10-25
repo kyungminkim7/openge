@@ -1,0 +1,65 @@
+#include <openge/GLShader.hpp>
+#include <openge/GLShaderProgram.hpp>
+#include <openge/RenderPipeline.hpp>
+
+namespace ge {
+
+namespace RenderPipeline {
+    namespace Attribute {
+        const char *POSITION = "aPosition";
+        const char *TEXTURE_COORDINATE = "aTextureCoordinate";
+    }  // namespace Attribute
+
+    namespace Uniform {
+
+        const char *MODEL = "model";
+        const char *VIEW = "view";
+        const char *PROJECTION = "projection";
+
+        namespace Material {
+            const char *COLOR = "color";
+            const std::vector<const char *> TEXTURES {
+                "texture0",
+                "texture1",
+                "texture2",
+                "texture3",
+                "texture4",
+                "texture5",
+                "texture6",
+                "texture7",
+                "texture8",
+                "texture9",
+                "texture10",
+                "texture11",
+                "texture12",
+                "texture13",
+                "texture14",
+                "texture15",
+            };
+        }  // namespace Material
+    }  // namespace Uniform
+
+    namespace Standard {
+        static std::shared_ptr<GLShaderProgram> shader = nullptr;
+
+        std::shared_ptr<GLShaderProgram> getShaderProgram() {
+            if (shader == nullptr) {
+                shader = std::make_shared<GLShaderProgram>();
+                shader->create();
+                shader->addShaderFromSourceCode(GLShader::ShaderTypeBit::Vertex,
+                                                R"-(${STANDARD_VERT})-");
+                shader->addShaderFromSourceCode(
+                    GLShader::ShaderTypeBit::Fragment, R"-(${STANDARD_FRAG})-");
+                shader->link();
+            }
+
+            return shader;
+        }
+    }  // namespace Standard
+
+    void destroy() {
+        Standard::shader.reset();
+    }
+}  // namespace RenderPipeline
+
+}  // namespace ge

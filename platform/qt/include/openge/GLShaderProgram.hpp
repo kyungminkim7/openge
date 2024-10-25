@@ -24,6 +24,17 @@ class GLShaderProgram {
      * Compiles source as a shader of the specified type and
      * adds it to this shader program.
      *
+     * @param type Shader type to compile as.
+     * @param source Shader source code.
+     * @exception BuildError Failed to add shader.
+     */
+    void addShaderFromSourceCode(ge::GLShader::ShaderTypeBit type,
+                                 const char *source);
+
+    /**
+     * Compiles source as a shader of the specified type and
+     * adds it to this shader program.
+     *
      * The file should be embedded using QRC in an assets directory
      * and only the relative filepath from assets should be given.
      *

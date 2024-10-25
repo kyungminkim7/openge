@@ -4,6 +4,8 @@
 
 namespace ge {
 
+class Image;
+
 /**
  * OpenGL textures.
  */
@@ -54,15 +56,15 @@ class GLTexture {
     };
 
     /**
-     * Creates an OpenGL texture object from an image file.
+     * Creates an OpenGL texture object from an image.
      *
      * @note This creates the underlying OpenGL texture object
      *       and requires a valid current OpenGL context.
      *
-     * @param filepath Image filepath to create a texture from.
+     * @param image Image to create a texture from.
      * @param genMipMaps Generate chain of mipmaps.
      */
-    explicit GLTexture(const char *filepath,
+    explicit GLTexture(const Image &image,
         MipMapGeneration genMipMaps = MipMapGeneration::GenerateMipMaps);
 
     ~GLTexture();

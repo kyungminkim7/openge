@@ -1,0 +1,14 @@
+#version ${GLSL_VERSION}
+
+${GLSL_PRECISION}
+
+in vec2 fragTextureCoordinate;
+
+uniform vec4 color;
+uniform sampler2D texture0;
+
+out vec4 fragColor;
+
+void main() {
+    fragColor = texture(texture0, fragTextureCoordinate) * color;
+}

@@ -13,6 +13,13 @@ void GLShaderProgram::create() {
     }
 }
 
+void GLShaderProgram::addShaderFromSourceCode(ge::GLShader::ShaderTypeBit type,
+                                              const char *source) {
+    if (!program.addShaderFromSourceCode(type, source)) {
+        throw BuildError(program.log().toStdString());
+    }
+}
+
 void GLShaderProgram::addShaderFromSourceFile(ge::GLShader::ShaderTypeBit type,
                                               const char *filepath) {
     if (!program.addShaderFromSourceFile(type, filepath)) {

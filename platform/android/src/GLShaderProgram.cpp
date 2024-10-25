@@ -13,14 +13,6 @@ GLShaderProgram::~GLShaderProgram() {
     glDeleteProgram(program);
 }
 
-void GLShaderProgram::create() {
-    program = glCreateProgram();
-
-    if (program == 0) {
-        throw BuildError("Failed to create shader program object.");
-    }
-}
-
 void GLShaderProgram::addShaderFromSourceCode(ge::GLShader::ShaderTypeBit type,
                                               const char *source) {
     GLShader shader(type);
@@ -33,6 +25,34 @@ void GLShaderProgram::addShaderFromSourceFile(ge::GLShader::ShaderTypeBit type,
     GLShader shader(type);
     shader.compileSourceFile(filepath);
     glAttachShader(program, shader.shaderId());
+}
+
+int GLShaderProgram::attributeLocation(const char *name) const {
+    using namespace std::string_literals;
+
+    const auto location = glGetAttribLocation(program, name);
+
+    if (location == -1) {
+        throw std::invalid_argument(name + " is an invalid attribute"s);
+    }
+
+    return location;
+}
+
+void GLShaderProgram::enableAttributeArray(const char *name) {
+    glEnableVertexAttribArray(attributeLocation(name));
+}
+
+void GLShaderProgram::bind() {
+    glUseProgram(program);
+}
+
+void GLShaderProgram::create() {
+    program = glCreateProgram();
+
+    if (program == 0) {
+        throw BuildError("Failed to create shader program object.");
+    }
 }
 
 void GLShaderProgram::link() {
@@ -52,28 +72,8 @@ void GLShaderProgram::link() {
     }
 }
 
-void GLShaderProgram::bind() {
-    glUseProgram(program);
-}
-
 void GLShaderProgram::release() {
     glUseProgram(0);
-}
-
-int GLShaderProgram::attributeLocation(const char *name) const {
-    using namespace std::string_literals;
-
-    const auto location = glGetAttribLocation(program, name);
-
-    if (location == -1) {
-        throw std::invalid_argument(name + " is an invalid attribute"s);
-    }
-
-    return location;
-}
-
-void GLShaderProgram::enableAttributeArray(const char *name) {
-    glEnableVertexAttribArray(attributeLocation(name));
 }
 
 void GLShaderProgram::setAttributeBuffer(const char *name, GLenum type,
@@ -82,6 +82,27 @@ void GLShaderProgram::setAttributeBuffer(const char *name, GLenum type,
     glVertexAttribPointer(attributeLocation(name), tupleSize,
                           type, GL_FALSE, stride,
                           reinterpret_cast<void *>(offset));
+}
+
+void GLShaderProgram::setUniformValue(const char *name, GLint value) {
+    glUniform1i(uniformLocation(name), value);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      GLfloat x, GLfloat y, GLfloat z) {
+    glUniform3f(uniformLocation(name), x, y, z);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      GLfloat x, GLfloat y, GLfloat z,
+                                      GLfloat w) {
+    glUniform4f(uniformLocation(name), x, y, z, w);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      const glm::mat4 &value) {
+    glUniformMatrix4fv(uniformLocation(name), 1, GL_FALSE,
+                       glm::value_ptr(value));
 }
 
 int GLShaderProgram::uniformLocation(const char *name) const {
@@ -94,16 +115,6 @@ int GLShaderProgram::uniformLocation(const char *name) const {
     }
 
     return location;
-}
-
-void GLShaderProgram::setUniformValue(const char *name, GLint value) {
-    glUniform1i(uniformLocation(name), value);
-}
-
-void GLShaderProgram::setUniformValue(const char *name,
-                                      const glm::mat4 &value) {
-    glUniformMatrix4fv(uniformLocation(name), 1, GL_FALSE,
-                       glm::value_ptr(value));
 }
 
 }  // namespace ge

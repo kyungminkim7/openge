@@ -1,0 +1,17 @@
+#version ${GLSL_VERSION}
+
+in vec3 aPosition;
+in vec2 aTextureCoordinate;
+
+out vec2 fragTextureCoordinate;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+void main() {
+    gl_Position = projection * view * model *
+        vec4(aPosition.x, aPosition.y, aPosition.z, 1.0f);
+
+    fragTextureCoordinate = aTextureCoordinate;
+}

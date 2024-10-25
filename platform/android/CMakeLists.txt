@@ -1,6 +1,7 @@
 target_sources(openge PRIVATE
     src/Asset.cpp
     src/AssetManager.cpp
+    src/Color.cpp
     src/GLBuffer.cpp
     src/GLFunctions.cpp
     src/GLShader.cpp
@@ -16,7 +17,7 @@ target_include_directories(openge
     PUBLIC
         "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     PRIVATE
-        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/include>"
 )
 
 target_link_libraries(openge
