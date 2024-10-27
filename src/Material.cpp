@@ -16,6 +16,7 @@ void Material::addTexture(TexturePtr texture) {
     textures.push_back(std::move(texture));
 
     shaderProgram->bind();
+
     shaderProgram->setUniformValue(
         ge::RenderPipeline::Uniform::Material::TEXTURES[textureUnit],
         textureUnit);
@@ -25,7 +26,7 @@ std::shared_ptr<GLShaderProgram> Material::getShaderProgram() {
     return shaderProgram;
 }
 
-void Material::render() {
+void Material::bind() {
     shaderProgram->setUniformValue(ge::RenderPipeline::Uniform::Material::COLOR,
                                    color.redF(), color.greenF(), color.blueF(),
                                    color.alphaF());

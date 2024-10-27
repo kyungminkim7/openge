@@ -9,10 +9,15 @@
 
 namespace ge {
 
-template<typename T>
-void GameObject::addComponent(std::shared_ptr<T> component) {
+template<typename T, typename... Args>
+std::shared_ptr<T> GameObject::addComponent(Args&&... args) {
     const auto type = getComponentTypeIndex<T>();
-    components[type].emplace_back(std::move(component));
+    const auto component = std::make_shared<T>(shared_from_this(),
+                                               std::forward<Args>(args)...);
+
+    components[type].emplace_back(component);
+
+    return component;
 }
 
 template<typename T>
@@ -31,7 +36,7 @@ std::vector<std::shared_ptr<T>> GameObject::getComponents() {
     if (iter == components.end()) {
         return {};
     } else {
-        std::vector<std::shared_ptr<T>> attachedComponents(components.size());
+        std::vector<std::shared_ptr<T>> attachedComponents(iter->second.size());
         std::transform(iter->second.cbegin(), iter->second.cend(),
                        attachedComponents.begin(),
                        std::static_pointer_cast<T, Component>);

@@ -1,24 +1,159 @@
+#include <stdexcept>
 #include <utility>
 
 #include <openge/Material.hpp>
 #include <openge/Mesh.hpp>
+#include <openge/RenderPipeline.hpp>
 
-namespace ge {
+namespace {
 
-Mesh::Mesh(std::shared_ptr<GameObject> gameObject) :
-    Component(std::move(gameObject)) {}
+constexpr auto POSITION_STRIDE =
+    ge::Mesh::Position::length() *
+    sizeof(ge::Mesh::Position::value_type);
 
-void Mesh::render() {
-    if (material != nullptr) {
-        auto shaderProgram = material->getShaderProgram();
-        shaderProgram->bind();
+constexpr auto NORMAL_STRIDE =
+    ge::Mesh::Normal::length() *
+    sizeof(ge::Mesh::Normal::value_type);
 
-        material->render();
+constexpr auto TEXTURE_COORDINATE_STRIDE =
+    ge::Mesh::TextureCoordinate::length() *
+    sizeof(ge::Mesh::TextureCoordinate::value_type);
+
+GLenum getRenderMode(ge::Mesh::Topology topology) {
+    switch (topology) {
+        case ge::Mesh::Topology::Triangles:
+            return GL_TRIANGLES;
+
+        default:
+            throw std::invalid_argument("Unsupported render mode");
     }
 }
 
-void Mesh::setMaterial(std::shared_ptr<Material> material) {
-    this->material = std::move(material);
+}  // namespace
+
+namespace ge {
+
+Mesh::Mesh(std::shared_ptr<GameObject> gameObject,
+           const MeshData &meshData,
+           std::shared_ptr<Material> material) :
+    Component(std::move(gameObject)),
+    vertexArray(),
+    vertexBuffer(ge::GLBuffer::Type::VertexBuffer),
+    elementBuffer(ge::GLBuffer::Type::IndexBuffer),
+    renderMode(getRenderMode(meshData.topology)),
+    material(std::move(material)) {
+    initializeOpenGLFunctions();
+
+    vertexArray.create();
+
+    vertexBuffer.create();
+    vertexBuffer.setUsagePattern(GLBuffer::UsagePattern::StaticDraw);
+
+    elementBuffer.create();
+    elementBuffer.setUsagePattern(GLBuffer::UsagePattern::StaticDraw);
+
+    uploadMeshData(meshData);
+}
+
+std::shared_ptr<Material> Mesh::getMaterial() {
+    return material;
+}
+
+void Mesh::render() {
+    auto shaderProgram = material->getShaderProgram();
+
+    shaderProgram->bind();
+    vertexArray.bind();
+    material->bind();
+
+    glDrawElements(renderMode, numIndices, GL_UNSIGNED_INT, nullptr);
+}
+
+void Mesh::setVertexAttributes(std::size_t positionsOffset,
+                               std::size_t normalsOffset,
+                               std::size_t textureCoordinatesOffset,
+                               GLShaderProgram *shaderProgram) {
+    // Enable attributes
+    shaderProgram->enableAttributeArray(
+        ge::RenderPipeline::Attribute::POSITION);
+
+    shaderProgram->enableAttributeArray(
+        ge::RenderPipeline::Attribute::NORMAL);
+
+    shaderProgram->enableAttributeArray(
+        ge::RenderPipeline::Attribute::TEXTURE_COORDINATE);
+
+    // Set attributes
+    shaderProgram->setAttributeBuffer(
+        ge::RenderPipeline::Attribute::POSITION,
+        GL_FLOAT, positionsOffset, Position::length(),
+        POSITION_STRIDE);
+
+    shaderProgram->setAttributeBuffer(
+        ge::RenderPipeline::Attribute::NORMAL,
+        GL_FLOAT, normalsOffset, Normal::length(), NORMAL_STRIDE);
+
+    shaderProgram->setAttributeBuffer(
+        ge::RenderPipeline::Attribute::TEXTURE_COORDINATE,
+        GL_FLOAT, textureCoordinatesOffset, TextureCoordinate::length(),
+        TEXTURE_COORDINATE_STRIDE);
+}
+
+void Mesh::setUsagePattern(GLBuffer::UsagePattern usagePattern) {
+    vertexBuffer.setUsagePattern(usagePattern);
+    elementBuffer.setUsagePattern(usagePattern);
+}
+
+void Mesh::uploadIndices(const std::vector<Index> &indices) {
+    elementBuffer.allocate(indices.data(), indices.size() * sizeof(Index));
+    numIndices = indices.size();
+}
+
+void Mesh::uploadMeshData(const MeshData &meshData) {
+    auto shaderProgram = material->getShaderProgram();
+
+    shaderProgram->bind();
+    vertexArray.bind();
+    vertexBuffer.bind();
+    elementBuffer.bind();
+
+    uploadVertices(meshData, shaderProgram.get());
+    uploadIndices(meshData.indices);
+}
+
+void Mesh::uploadVertices(const MeshData &meshData,
+                          GLShaderProgram *shaderProgram) {
+    const auto positionsSize = meshData.positions.size() * POSITION_STRIDE;
+    const auto normalsSize = meshData.normals.size() * NORMAL_STRIDE;
+    const auto textureCoordinatesSize = meshData.textureCoordinates.size() *
+                                        TEXTURE_COORDINATE_STRIDE;
+
+    const auto meshDataSize = positionsSize +
+                              normalsSize +
+                              textureCoordinatesSize;
+
+    const auto positionsOffset = 0;
+    const auto normalsOffset = positionsOffset + positionsSize;
+    const auto textureCoordinatesOffset = normalsOffset + normalsSize;
+
+    vertexBuffer.allocate(meshDataSize);
+
+    vertexBuffer.write(positionsOffset,
+                       meshData.positions.data(),
+                       positionsSize);
+
+    vertexBuffer.write(normalsOffset,
+                       meshData.normals.data(),
+                       normalsSize);
+
+    vertexBuffer.write(textureCoordinatesOffset,
+                       meshData.textureCoordinates.data(),
+                       textureCoordinatesSize);
+
+    setVertexAttributes(positionsOffset,
+                        normalsOffset,
+                        textureCoordinatesOffset,
+                        shaderProgram);
 }
 
 }  // namespace ge

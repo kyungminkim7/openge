@@ -15,22 +15,38 @@ using GameObjectPtr = std::shared_ptr<GameObject>;
 /**
  * Base class for all entities in Scenes.
  */
-class GameObject {
+class GameObject : public std::enable_shared_from_this<GameObject> {
  public:
     /**
-     * Factory function for creating a game object;
+     * Primitive types of game objects that can be created by using
+     * createPrimitive().
+     */
+    enum class PrimitiveType {
+        Cube
+    };
+
+    /**
+     * Factory function for creating a game object.
      *
      * @return Game object.
      */
     static GameObjectPtr create();
 
     /**
+     * Creates a game object of the specified primitive type.
+     *
+     * @param type Primitive type of game object to create.
+     * @return Constructed primitive game object.
+     */
+    static GameObjectPtr createPrimitive(PrimitiveType type);
+
+    /**
      * Add a component to the game object.
      *
-     * @param component Component to add.
+     * @return Added component.
      */
-    template<typename T>
-    void addComponent(std::shared_ptr<T> component);
+    template<typename T, typename... Args>
+    std::shared_ptr<T> addComponent(Args&&... args);
 
     /**
      * Gets the first attached component of a specific type.
@@ -48,6 +64,11 @@ class GameObject {
      */
     template<typename T>
     std::vector<std::shared_ptr<T>> getComponents();
+
+    /**
+     * Renders the game object.
+     */
+    void render();
 
  private:
     GameObject() = default;

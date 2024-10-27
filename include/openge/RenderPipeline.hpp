@@ -10,6 +10,7 @@ class GLShaderProgram;
 namespace RenderPipeline {
     namespace Attribute {
         extern const char *POSITION;
+        extern const char *NORMAL;
         extern const char *TEXTURE_COORDINATE;
     }  // namespace Attribute
 

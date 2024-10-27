@@ -7,11 +7,11 @@ namespace ge {
 namespace RenderPipeline {
     namespace Attribute {
         const char *POSITION = "aPosition";
+        const char *NORMAL = "aNormal";
         const char *TEXTURE_COORDINATE = "aTextureCoordinate";
     }  // namespace Attribute
 
     namespace Uniform {
-
         const char *MODEL = "model";
         const char *VIEW = "view";
         const char *PROJECTION = "projection";

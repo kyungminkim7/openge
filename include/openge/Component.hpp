@@ -18,6 +18,8 @@ class Component {
      */
     explicit Component(std::shared_ptr<GameObject> gameObject);
 
+    virtual ~Component() = default;
+
  protected:
     /**
      * Get the game object this component is attached to.

@@ -42,9 +42,9 @@ class Material {
     std::shared_ptr<GLShaderProgram> getShaderProgram();
 
     /**
-     * Renders the material.
+     * Binds the material for rendering.
      */
-    void render();
+    void bind();
 
     /**
      * Sets the color of the material.

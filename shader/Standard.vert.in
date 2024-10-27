@@ -1,6 +1,7 @@
 #version ${GLSL_VERSION}
 
 in vec3 aPosition;
+in vec3 aNormal;
 in vec2 aTextureCoordinate;
 
 out vec2 fragTextureCoordinate;
