@@ -80,6 +80,11 @@ class Mesh : public Component, protected GLFunctions {
         std::vector<Index> indices;
 
         /**
+         * Buffer usage pattern.
+         */
+        GLBuffer::UsagePattern usagePattern;
+
+        /**
          * Mesh face topology.
          */
         Topology topology;
@@ -107,13 +112,6 @@ class Mesh : public Component, protected GLFunctions {
      * Renders the mesh.
      */
     void render();
-
-    /**
-     * Sets the usage pattern for the buffer objects.
-     *
-     * @param usagePattern Buffer object usage patterns.
-     */
-    void setUsagePattern(GLBuffer::UsagePattern usagePattern);
 
  private:
     void setVertexAttributes(std::size_t positionsOffset,

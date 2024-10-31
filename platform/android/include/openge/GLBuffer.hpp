@@ -65,6 +65,13 @@ class GLBuffer {
     void bind();
 
     /**
+     * Allocates space to the buffer.
+     *
+     * @param count Bytes of space to allocate.
+     */
+    void allocate(int count);
+
+    /**
      * Allocates space to the buffer, initialized to the
      * contents of data.
      *
@@ -72,6 +79,19 @@ class GLBuffer {
      * @param count Bytes of space to allocate.
      */
     void allocate(const void *data, int count);
+
+    /**
+     * Replaces the count bytes of this buffer starting at offset with the
+     * contents of data. Any other bytes in the buffer will be left unmodified.
+     *
+     * It is assumed that create() has been called on this buffer and that it
+     * has been bound to the current context.
+     *
+     * @param offset Buffer offset at which to start writing data.
+     * @param data Data to write.
+     * @param count Number of bytes to write.
+     */
+    void write(int offset, const void *data, int count);
 
  private:
     GLenum target;

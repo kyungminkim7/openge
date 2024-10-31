@@ -23,8 +23,16 @@ void GLBuffer::bind() {
     glBindBuffer(target, buffer);
 }
 
+void GLBuffer::allocate(int count) {
+    glBufferData(target, count, nullptr, usage);
+}
+
 void GLBuffer::allocate(const void *data, int count) {
     glBufferData(target, count, data, usage);
+}
+
+void GLBuffer::write(int offset, const void *data, int count) {
+    glBufferSubData(target, offset, count, data);
 }
 
 }  // namespace ge

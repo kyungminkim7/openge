@@ -47,10 +47,10 @@ Mesh::Mesh(std::shared_ptr<GameObject> gameObject,
     vertexArray.create();
 
     vertexBuffer.create();
-    vertexBuffer.setUsagePattern(GLBuffer::UsagePattern::StaticDraw);
+    vertexBuffer.setUsagePattern(meshData.usagePattern);
 
     elementBuffer.create();
-    elementBuffer.setUsagePattern(GLBuffer::UsagePattern::StaticDraw);
+    elementBuffer.setUsagePattern(meshData.usagePattern);
 
     uploadMeshData(meshData);
 }
@@ -97,11 +97,6 @@ void Mesh::setVertexAttributes(std::size_t positionsOffset,
         ge::RenderPipeline::Attribute::TEXTURE_COORDINATE,
         GL_FLOAT, textureCoordinatesOffset, TextureCoordinate::length(),
         TEXTURE_COORDINATE_STRIDE);
-}
-
-void Mesh::setUsagePattern(GLBuffer::UsagePattern usagePattern) {
-    vertexBuffer.setUsagePattern(usagePattern);
-    elementBuffer.setUsagePattern(usagePattern);
 }
 
 void Mesh::uploadIndices(const std::vector<Index> &indices) {

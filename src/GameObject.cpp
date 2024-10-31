@@ -1,6 +1,7 @@
 #include <stdexcept>
 
 #include <openge/ColorConstants.hpp>
+#include <openge/GLBuffer.hpp>
 #include <openge/GameObject.hpp>
 #include <openge/Image.hpp>
 #include <openge/Material.hpp>
@@ -12,8 +13,7 @@ namespace {
 
 ge::Mesh::MeshData createCubeMeshData() {
     return {
-        // positions
-        std::vector<glm::vec3> {
+        std::vector<ge::Mesh::Position> {
             // back face
             {-0.5f, -0.5f, -0.5f},  // bottom-left
             { 0.5f,  0.5f, -0.5f},  // top-right
@@ -51,8 +51,7 @@ ge::Mesh::MeshData createCubeMeshData() {
             {-0.5f,  0.5f,  0.5f}   // bottom-left
         },
 
-        // normals
-        std::vector<glm::vec3> {
+        std::vector<ge::Mesh::Normal> {
             // back face
             { 0.0f,  0.0f, -1.0f},  // bottom-left
             { 0.0f,  0.0f, -1.0f},  // top-right
@@ -90,8 +89,7 @@ ge::Mesh::MeshData createCubeMeshData() {
             { 0.0f,  1.0f,  0.0f}   // bottom-left
         },
 
-        // texture coordinates
-        std::vector<glm::vec2> {
+        std::vector<ge::Mesh::TextureCoordinate> {
             // back face
             {0.0f, 0.0f},  // bottom-left
             {1.0f, 1.0f},  // top-right
@@ -129,8 +127,7 @@ ge::Mesh::MeshData createCubeMeshData() {
             {0.0f, 0.0f}   // bottom-left
         },
 
-        // indices
-        std::vector<unsigned int> {
+        std::vector<ge::Mesh::Index> {
             // back face
             0u, 1u, 2u,
             1u, 0u, 3u,
@@ -155,6 +152,8 @@ ge::Mesh::MeshData createCubeMeshData() {
             20u, 21u, 22u,
             21u, 20u, 23u
         },
+
+        ge::GLBuffer::UsagePattern::StaticDraw,
 
         ge::Mesh::Topology::Triangles
     };
