@@ -1,9 +1,11 @@
 #include <stdexcept>
 #include <utility>
 
+#include <openge/GameObject.hpp>
 #include <openge/Material.hpp>
 #include <openge/Mesh.hpp>
 #include <openge/RenderPipeline.hpp>
+#include <openge/Transform.hpp>
 
 namespace {
 
@@ -65,6 +67,10 @@ void Mesh::render() {
     shaderProgram->bind();
     vertexArray.bind();
     material->bind();
+
+    auto transform = getGameObject()->getComponent<ge::Transform>();
+    shaderProgram->setUniformValue(ge::RenderPipeline::Uniform::MODEL,
+                                   transform->getLocalToWorldMatrix());
 
     glDrawElements(renderMode, numIndices, GL_UNSIGNED_INT, nullptr);
 }
