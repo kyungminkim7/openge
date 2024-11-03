@@ -3,6 +3,8 @@
 #include <memory>
 
 #include <glm/ext/quaternion_float.hpp>
+#include <glm/mat3x3.hpp>
+#include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 #include <openge/CoordinateSystem.hpp>
 #include <openge/Component.hpp>
@@ -31,8 +33,8 @@ class Transform : public Component {
     explicit Transform(std::shared_ptr<GameObject> gameObject = nullptr);
 
     /**
-     * Returns a normalized vector representing the forward
-     * direction of the transform.
+     * Returns a normalized vector representing the forward direction of the
+     * transform.
      *
      * @return Forward direction of transform.
      */
@@ -47,8 +49,14 @@ class Transform : public Component {
     glm::vec3 getLeft() const;
 
     /**
-     * Returns a normalized vector representing the up
-     * direction of the transform.
+     * Get a matrix that transforms a point from local space into world space.
+     *
+     * @return Local to world matrix.
+     */
+    glm::mat4 getLocalToWorldMatrix() const;
+
+    /**
+     * Gets a normalized vector representing the up direction of the transform.
      *
      * @return Up direction of transform.
      */
@@ -76,6 +84,13 @@ class Transform : public Component {
     glm::vec3 getScale() const;
 
     /**
+     * Get a matrix that transforms a point from world space into local space.
+     *
+     * @return World to local matrix.
+     */
+    glm::mat4 getWorldToLocalMatrix() const;
+
+    /**
      * Transforms a direction from world space to local space.
      *
      * This operation is not affected by scale or position
@@ -88,10 +103,9 @@ class Transform : public Component {
     glm::vec3 inverseTransformDirection(const glm::vec3 &direction);
 
     /**
-     * Rotates the transform so the forward vector points at
-     * a target position and then rotates the transform to point
-     * its up direction vector in the direction hinted by the
-     * worldUp vector.
+     * Rotates the transform so the forward vector points at a target position
+     * and then rotates the transform to point its up direction vector in the
+     * direction hinted by the worldUp vector.
      *
      * @param worldPosition Point to look at in world space.
      * @param worldUp Upward direction in world space.
@@ -104,8 +118,8 @@ class Transform : public Component {
      *
      * @param axis Axis to apply rotation to.
      * @param radians Rotation angle to apply.
-     * @param relativeTo Determines whether to rotate locally
-     *                   or relative to world space.
+     * @param relativeTo Determines whether to rotate locally or relative to
+     *                   world space.
      */
     void rotate(const glm::vec3 &axis, float radians,
                 Space relativeTo = Space::Self);
@@ -134,9 +148,8 @@ class Transform : public Component {
     /**
      * Transforms direction from local space to world space.
      *
-     * This operation is not affected by scale or position
-     * of the transform. The returned vector has the same
-     * length as the original.
+     * This operation is not affected by scale or position of the transform. The
+     * returned vector has the same length as the original.
      *
      * @param direction Direction in local space.
      * @return Direction in world space.
@@ -148,13 +161,15 @@ class Transform : public Component {
      * of translation.
      *
      * @param translation Direction and distance to move.
-     * @param relativeTo Determines whether to move relative
-     *                   relative to local/world space.
+     * @param relativeTo Determines whether to move relative relative to
+     *                   local/world space.
      */
     void translate(const glm::vec3 &translation,
                    Space relativeTo = Space::Self);
 
  private:
+    glm::mat3 getLocalToWorldRotation() const;
+
     glm::vec3 scale;
     glm::vec3 position;
     glm::quat rotation;

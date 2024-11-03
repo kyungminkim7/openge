@@ -39,6 +39,7 @@ configure_file(src/RenderPipeline.cpp.in
 # OpenGE library
 add_library(openge
     "${CMAKE_CURRENT_BINARY_DIR}/src/RenderPipeline.cpp"
+    src/Camera.cpp
     src/ColorConstants.cpp
     src/Component.cpp
     src/CoordinateSystem.cpp

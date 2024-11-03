@@ -2,8 +2,8 @@
 
 #include <glm/ext/quaternion_transform.hpp>
 #include <glm/geometric.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <glm/mat3x3.hpp>
 #include <openge/Transform.hpp>
 
 namespace ge {
@@ -13,15 +13,29 @@ Transform::Transform(std::shared_ptr<GameObject> gameObject) :
     scale{1.0f}, position{ 0.0f }, rotation{ glm::identity<glm::quat>() }  {}
 
 glm::vec3 Transform::getForward() const {
-    return glm::mat3_cast(rotation)[0];
+    return getLocalToWorldRotation()[0];
 }
 
 glm::vec3 Transform::getLeft() const {
-    return glm::mat3_cast(rotation)[1];
+    return getLocalToWorldRotation()[1];
+}
+
+glm::mat3 Transform::getLocalToWorldRotation() const {
+    return glm::mat3_cast(rotation);
+}
+
+glm::mat4 Transform::getLocalToWorldMatrix() const {
+    auto localToWorldMatrix = glm::mat4_cast(rotation);
+
+    for (auto i = 0; i < 3; ++i) {
+        localToWorldMatrix[3][i] = position[i];
+    }
+
+    return localToWorldMatrix;
 }
 
 glm::vec3 Transform::getUp() const {
-    return glm::mat3_cast(rotation)[2];
+    return getLocalToWorldRotation()[2];
 }
 
 glm::vec3 Transform::getPosition() const {
@@ -34,6 +48,14 @@ glm::quat Transform::getRotation() const {
 
 glm::vec3 Transform::getScale() const {
     return scale;
+}
+
+glm::mat4 Transform::getWorldToLocalMatrix() const {
+    const auto localToWorldRotation = getLocalToWorldRotation();
+
+    return glm::lookAt(position,
+                       position + localToWorldRotation[0],
+                       localToWorldRotation[2]);
 }
 
 glm::vec3 Transform::inverseTransformDirection(const glm::vec3 &direction) {
