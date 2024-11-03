@@ -182,18 +182,19 @@ GameObjectPtr GameObject::create() {
 GameObjectPtr GameObject::createPrimitive(PrimitiveType type) {
     auto gameObject = create();
 
-    auto shaderProgram = ge::RenderPipeline::Standard::getShaderProgram();
+    auto shaderProgram =
+        RenderPipeline::getShaderProgram(RenderPipeline::Program::Standard);
 
-    ge::Image image(1, 1, ge::Image::Format::Format_RGBA8888);
-    image.fill(ge::ColorConstants::WHITE);
+    Image image(1, 1, Image::Format::Format_RGBA8888);
+    image.fill(ColorConstants::WHITE);
 
-    auto texture = std::make_shared<ge::GLTexture>(image);
+    auto texture = std::make_shared<GLTexture>(image);
 
-    auto material = std::make_shared<ge::Material>(std::move(shaderProgram));
+    auto material = std::make_shared<Material>(std::move(shaderProgram));
     material->addTexture(std::move(texture));
 
-    auto mesh = gameObject->addComponent<ge::Mesh>(createMeshData(type),
-                                                   std::move(material));
+    auto mesh = gameObject->addComponent<Mesh>(createMeshData(type),
+                                               std::move(material));
 
     return gameObject;
 }
