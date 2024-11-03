@@ -70,6 +70,11 @@ class GameObject : public std::enable_shared_from_this<GameObject> {
      */
     void render();
 
+    /**
+     * Updates the game object and all attached components.
+     */
+    void update();
+
  private:
     GameObject() = default;
 

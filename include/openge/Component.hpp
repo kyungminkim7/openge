@@ -20,6 +20,11 @@ class Component {
 
     virtual ~Component() = default;
 
+    /**
+     * Overridable behavior called every frame.
+     */
+    virtual void update();
+
  protected:
     /**
      * Get the game object this component is attached to.

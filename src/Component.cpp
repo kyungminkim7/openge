@@ -9,4 +9,6 @@ std::shared_ptr<GameObject> Component::getGameObject() {
     return gameObject.lock();
 }
 
+void Component::update() {}
+
 }  // namespace ge

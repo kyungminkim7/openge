@@ -205,4 +205,12 @@ void GameObject::render() {
     }
 }
 
+void GameObject::update() {
+    for (auto &componentFamily : components) {
+        for (auto &component : componentFamily.second) {
+            component->update();
+        }
+    }
+}
+
 }  // namespace ge
