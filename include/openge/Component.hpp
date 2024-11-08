@@ -21,6 +21,11 @@ class Component {
     virtual ~Component() = default;
 
     /**
+     * Overridable behavior called once upon being added to a GameObject.
+     */
+    virtual void init();
+
+    /**
      * Overridable behavior called every frame.
      */
     virtual void update();

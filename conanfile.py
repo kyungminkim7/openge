@@ -40,7 +40,7 @@ class OpenGERecipe(ConanFile):
 
     def build_requirements(self):
         self.tool_requires("cmake/[>=3.23]")
-        self.tool_requires("cppcheck/2.14.1")
+        self.tool_requires("cppcheck/2.16.0")
         self.tool_requires("doxygen/1.9.4")
 
     def requirements(self):

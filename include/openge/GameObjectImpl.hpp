@@ -12,8 +12,10 @@ namespace ge {
 template<typename T, typename... Args>
 std::shared_ptr<T> GameObject::addComponent(Args&&... args) {
     const auto type = getComponentTypeIndex<T>();
+
     const auto component = std::make_shared<T>(shared_from_this(),
                                                std::forward<Args>(args)...);
+    component->init();
 
     components[type].emplace_back(component);
 

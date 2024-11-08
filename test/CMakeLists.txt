@@ -4,6 +4,7 @@ include(GoogleTest)
 add_executable(openge_test
     src/TestException.cpp
     src/TestGameObject.cpp
+    src/TestInputSystem.cpp
     src/TestLua.cpp
     src/TestTransform.cpp
 )

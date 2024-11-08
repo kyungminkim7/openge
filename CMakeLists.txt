@@ -5,7 +5,7 @@ project(openge CXX)
 # Static Analysis
 #=============================
 set(CMAKE_CXX_CPPCHECK
-    "cppcheck;--error-exitcode=1;--enable=performance,portability")
+    "cppcheck;--error-exitcode=1;--inline-suppr;--enable=performance,portability")
 
 #=============================
 # Build
@@ -45,6 +45,7 @@ add_library(openge
     src/CoordinateSystem.cpp
     src/Exception.cpp
     src/GameObject.cpp
+    src/InputSystem.cpp
     src/Lua.cpp
     src/Material.cpp
     src/Mesh.cpp
