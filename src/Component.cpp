@@ -1,9 +1,11 @@
+#include <utility>
+
 #include <openge/Component.hpp>
 
 namespace ge {
 
-Component::Component(std::shared_ptr<GameObject> gameObject) :
-    gameObject(gameObject) {}
+Component::Component(std::weak_ptr<GameObject> gameObject) :
+    gameObject(std::move(gameObject)) {}
 
 std::shared_ptr<GameObject> Component::getGameObject() {
     return gameObject.lock();
