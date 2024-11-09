@@ -24,7 +24,7 @@ class OpenGERecipe(ConanFile):
 
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", \
-        "src/*", "include/*", "platform/*", "shader/*"\
+        "src/*", "include/*", "platform/*", "shader/*", \
         "mock/*", "test/*"
 
     def validate(self):
