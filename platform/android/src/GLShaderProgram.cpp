@@ -1,6 +1,5 @@
 #include <array>
 #include <iterator>
-#include <stdexcept>
 #include <string>
 
 #include <glm/gtc/type_ptr.hpp>
@@ -28,15 +27,7 @@ void GLShaderProgram::addShaderFromSourceFile(ge::GLShader::ShaderTypeBit type,
 }
 
 int GLShaderProgram::attributeLocation(const char *name) const {
-    using namespace std::string_literals;
-
-    const auto location = glGetAttribLocation(program, name);
-
-    if (location == -1) {
-        throw std::invalid_argument(name + " is an invalid attribute"s);
-    }
-
-    return location;
+    return glGetAttribLocation(program, name);
 }
 
 void GLShaderProgram::enableAttributeArray(const char *name) {
@@ -106,15 +97,7 @@ void GLShaderProgram::setUniformValue(const char *name,
 }
 
 int GLShaderProgram::uniformLocation(const char *name) const {
-    using namespace std::string_literals;
-
-    const auto location = glGetUniformLocation(program, name);
-
-    if (location == -1) {
-        throw std::invalid_argument(name + " is an invalid uniform"s);
-    }
-
-    return location;
+    return glGetUniformLocation(program, name);
 }
 
 }  // namespace ge
