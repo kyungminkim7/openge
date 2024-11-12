@@ -11,7 +11,6 @@ set(CMAKE_CXX_CPPCHECK
 # Build
 #=============================
 find_package(glm CONFIG REQUIRED)
-find_package(lua CONFIG REQUIRED)
 
 # Configure built-in shaders
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
@@ -46,7 +45,6 @@ add_library(openge
     src/Exception.cpp
     src/GameObject.cpp
     src/InputSystem.cpp
-    src/Lua.cpp
     src/Material.cpp
     src/Mesh.cpp
     src/Transform.cpp
@@ -59,7 +57,6 @@ target_include_directories(openge PUBLIC
 target_link_libraries(openge
     PUBLIC
         glm::glm
-        lua::lua
 )
 
 add_subdirectory(platform)

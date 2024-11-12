@@ -45,7 +45,6 @@ class OpenGERecipe(ConanFile):
 
     def requirements(self):
         self.requires("glm/1.0.1", transitive_headers=True)
-        self.requires("lua/5.4.7", transitive_headers=True)
 
         if not self.settings.os == "Android":
             self.requires("qt/6.4.2", transitive_headers=True)
