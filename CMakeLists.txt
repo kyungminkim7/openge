@@ -45,6 +45,7 @@ add_library(openge
     src/Exception.cpp
     src/GameObject.cpp
     src/InputSystem.cpp
+    src/Light.cpp
     src/Material.cpp
     src/Mesh.cpp
     src/Transform.cpp

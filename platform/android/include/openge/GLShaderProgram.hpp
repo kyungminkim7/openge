@@ -2,7 +2,9 @@
 
 #include <GLES3/gl32.h>
 
+#include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 #include <openge/GLShader.hpp>
 
 namespace ge {
@@ -105,6 +107,23 @@ class GLShaderProgram {
      * Sets the uniform value in the current context.
      *
      * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    void setUniformValue(const char *name, GLfloat value);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param x X value.
+     * @param y Y value.
+     */
+    void setUniformValue(const char *name, GLfloat x, GLfloat y);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
      * @param x X value.
      * @param y Y value.
      * @param z Z value.
@@ -122,6 +141,22 @@ class GLShaderProgram {
      */
     void setUniformValue(const char *name,
                          GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    void setUniformValue(const char *name, const glm::vec3 &value);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    void setUniformValue(const char *name, const glm::mat3 &value);
 
     /**
      * Sets the uniform value in the current context.

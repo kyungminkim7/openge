@@ -2,7 +2,9 @@
 
 #include <cstddef>
 #include <memory>
-#include <vector>
+#include <string>
+#include <unordered_map>
+#include <utility>
 
 #include <openge/Color.hpp>
 #include <openge/GLShaderProgram.hpp>
@@ -28,11 +30,13 @@ class Material {
     explicit Material(std::shared_ptr<GLShaderProgram> shaderProgram);
 
     /**
-     * Appends the given texture. Textures are rendered in order.
+     * Adds the given texture.
      *
+     * @param name Texture name.
+     * @param unit Texture unit.
      * @param texture Texture to append.
      */
-    void addTexture(TexturePtr texture);
+    void addTexture(const std::string &name, int unit, TexturePtr texture);
 
     /**
      * Gets the shader program used by the material.
@@ -54,17 +58,19 @@ class Material {
     void setColor(const Color &color);
 
     /**
-     * Replaces the texture at the location of the index.
+     * Sets the specular lighting shine component of the material.
      *
-     * @param texture Texture to set as.
-     * @param index Index of texture to replace.
+     * @param shine Material shine.
      */
-    void setTexture(TexturePtr texture, std::size_t index = 0);
+    void setShine(float shine);
 
  private:
     std::shared_ptr<GLShaderProgram> shaderProgram;
+
     Color color;
-    std::vector<TexturePtr> textures;
+    float shine;
+
+    std::unordered_map<std::string, std::pair<int, TexturePtr>> textures;
 };
 
 }  // namespace ge

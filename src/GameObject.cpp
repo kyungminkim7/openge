@@ -159,14 +159,37 @@ ge::Mesh::MeshData createCubeMeshData() {
     };
 }
 
-ge::Mesh::MeshData createMeshData(ge::GameObject::PrimitiveType type) {
-    switch (type) {
-        case ge::GameObject::PrimitiveType::Cube:
+ge::Mesh::MeshData createPrimitiveMeshData(
+    ge::GameObject::Primitive primitive) {
+    switch (primitive) {
+        case ge::GameObject::Primitive::Cube:
             return createCubeMeshData();
 
         default:
-            throw std::invalid_argument("Unsupported GameObject PrimitiveType");
+            throw std::invalid_argument("Unsupported GameObject Primitive");
     }
+}
+
+std::shared_ptr<ge::Material> createPrimitiveMaterial() {
+    using ge::RenderPipeline::Program;
+    using ge::RenderPipeline::Uniform::Material::DIFFUSE_TEXTURE;
+    using ge::RenderPipeline::Uniform::Material::DIFFUSE_TEXTURE_UNIT;
+    using ge::RenderPipeline::Uniform::Material::SPECULAR_TEXTURE;
+    using ge::RenderPipeline::Uniform::Material::SPECULAR_TEXTURE_UNIT;
+
+    auto shaderProgram =
+        ge::RenderPipeline::getShaderProgram(Program::Standard);
+
+    ge::Image image(1, 1, ge::Image::Format::Format_RGBA8888);
+    image.fill(ge::ColorConstants::WHITE);
+
+    auto texture = std::make_shared<ge::GLTexture>(image);
+
+    auto material = std::make_shared<ge::Material>(std::move(shaderProgram));
+    material->addTexture(DIFFUSE_TEXTURE, DIFFUSE_TEXTURE_UNIT, texture);
+    material->addTexture(SPECULAR_TEXTURE, SPECULAR_TEXTURE_UNIT, texture);
+
+    return material;
 }
 
 }  // namespace
@@ -179,22 +202,11 @@ GameObjectPtr GameObject::create() {
     return gameObject;
 }
 
-GameObjectPtr GameObject::createPrimitive(PrimitiveType type) {
+GameObjectPtr GameObject::create(Primitive primitive) {
     auto gameObject = create();
 
-    auto shaderProgram =
-        RenderPipeline::getShaderProgram(RenderPipeline::Program::Standard);
-
-    Image image(1, 1, Image::Format::Format_RGBA8888);
-    image.fill(ColorConstants::WHITE);
-
-    auto texture = std::make_shared<GLTexture>(image);
-
-    auto material = std::make_shared<Material>(std::move(shaderProgram));
-    material->addTexture(std::move(texture));
-
-    auto mesh = gameObject->addComponent<Mesh>(createMeshData(type),
-                                               std::move(material));
+    gameObject->addComponent<Mesh>(createPrimitiveMeshData(primitive),
+                                   createPrimitiveMaterial());
 
     return gameObject;
 }

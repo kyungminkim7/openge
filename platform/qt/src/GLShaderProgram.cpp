@@ -1,4 +1,6 @@
+#include <QMatrix3x3>
 #include <QMatrix4x4>
+#include <QVector3D>
 #include <utility>
 
 #include <glm/gtc/type_ptr.hpp>
@@ -52,6 +54,23 @@ void GLShaderProgram::setAttributeBuffer(const char *name, GLenum type,
                                          int stride) {
     program.setAttributeBuffer(name, type,
                                offset, tupleSize, stride);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      const ge::Color &value) {
+    program.setUniformValue(name, value);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      const glm::vec3 &value) {
+    program.setUniformValue(name,
+                            QVector3D(value.x, value.y, value.z));
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      const glm::mat3 &value) {
+    program.setUniformValue(name,
+        QMatrix3x3(glm::value_ptr(value)).transposed());
 }
 
 void GLShaderProgram::setUniformValue(const char *name,

@@ -1,8 +1,12 @@
 #pragma once
 
 #include <QOpenGLShaderProgram>
+#include <type_traits>
 
+#include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
+#include <openge/Color.hpp>
 #include <openge/GLShader.hpp>
 
 namespace ge {
@@ -92,8 +96,32 @@ class GLShaderProgram {
      * @param name Uniform name.
      * @param value Uniform value.
      */
-    template<typename T>
+    template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     void setUniformValue(const char *name, T value);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    void setUniformValue(const char *name, const ge::Color &value);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    void setUniformValue(const char *name, const glm::vec3 &value);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param value Uniform value.
+     */
+    void setUniformValue(const char *name, const glm::mat3 &value);
 
     /**
      * Sets the uniform value in the current context.
@@ -110,9 +138,20 @@ class GLShaderProgram {
      * @param x
      * @param y
      * @param z
+     */
+    template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+    void setUniformValue(const char *name, T x, T y, T z);
+
+    /**
+     * Sets the uniform value in the current context.
+     *
+     * @param name Uniform name.
+     * @param x
+     * @param y
+     * @param z
      * @param w
      */
-    template<typename T>
+    template<typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
     void setUniformValue(const char *name, T x, T y, T z, T w);
 
  private:

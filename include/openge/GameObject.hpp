@@ -18,10 +18,9 @@ using GameObjectPtr = std::shared_ptr<GameObject>;
 class GameObject : public std::enable_shared_from_this<GameObject> {
  public:
     /**
-     * Primitive types of game objects that can be created by using
-     * createPrimitive().
+     * Primitive types of game objects that can be created.
      */
-    enum class PrimitiveType {
+    enum class Primitive {
         Cube
     };
 
@@ -35,10 +34,10 @@ class GameObject : public std::enable_shared_from_this<GameObject> {
     /**
      * Creates a game object of the specified primitive type.
      *
-     * @param type Primitive type of game object to create.
+     * @param primitive Primitive type of game object to create.
      * @return Constructed primitive game object.
      */
-    static GameObjectPtr createPrimitive(PrimitiveType type);
+    static GameObjectPtr create(Primitive primitive);
 
     /**
      * Add a component to the game object.

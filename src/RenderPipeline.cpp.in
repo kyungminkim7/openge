@@ -1,6 +1,5 @@
 #include <array>
 #include <type_traits>
-#include <vector>
 
 #include <openge/Camera.hpp>
 #include <openge/GLShader.hpp>
@@ -35,28 +34,55 @@ namespace Uniform {
     const char *MODEL = "model";
     const char *VIEW = "view";
     const char *PROJECTION = "projection";
+    const char *NORMAL = "normal";
+
+    const char *VIEW_POSITION = "viewPosition";
 
     namespace Material {
-        const char *COLOR = "color";
-        const std::vector<const char *> TEXTURES {
-            "texture0",
-            "texture1",
-            "texture2",
-            "texture3",
-            "texture4",
-            "texture5",
-            "texture6",
-            "texture7",
-            "texture8",
-            "texture9",
-            "texture10",
-            "texture11",
-            "texture12",
-            "texture13",
-            "texture14",
-            "texture15",
-        };
+        const char *DIFFUSE_TEXTURE = "material.diffuse";
+        const int DIFFUSE_TEXTURE_UNIT = 0;
+
+        const char *SPECULAR_TEXTURE = "material.specular";
+        const int SPECULAR_TEXTURE_UNIT = 1;
+
+        const char *SHINE = "material.shine";
+
+        const char *COLOR = "material.color";
     }  // namespace Material
+
+    namespace Light {
+        const char *AMBIENT = "ambient";
+    }  // namespace Light
+
+    namespace DirectionalLight {
+        const char *COUNT = "numDirectionalLights";
+
+        const std::vector<const char *> DIRECTION {
+            "directionalLights[0].direction",
+            "directionalLights[1].direction",
+            "directionalLights[2].direction",
+            "directionalLights[3].direction",
+            "directionalLights[4].direction",
+            "directionalLights[5].direction",
+            "directionalLights[6].direction",
+            "directionalLights[7].direction",
+            "directionalLights[8].direction",
+            "directionalLights[9].direction",
+        };
+
+        const std::vector<const char *> COLOR {
+            "directionalLights[0].color",
+            "directionalLights[1].color",
+            "directionalLights[2].color",
+            "directionalLights[3].color",
+            "directionalLights[4].color",
+            "directionalLights[5].color",
+            "directionalLights[6].color",
+            "directionalLights[7].color",
+            "directionalLights[8].color",
+            "directionalLights[9].color",
+        };
+    }  // namespace DirectionalLight
 }  // namespace Uniform
 
 void destroy() {
@@ -86,9 +112,11 @@ std::shared_ptr<GLShaderProgram> getShaderProgram(Program program) {
     return shaderProgram;
 }
 
-void uploadCameraMatrices(GameObject *camera) {
+void uploadCamera(GameObject *camera) {
     for (auto &shaderProgram : shaderPrograms) {
         if (shaderProgram != nullptr) {
+            const auto transform = camera->getComponent<Transform>();
+
             shaderProgram->bind();
 
             shaderProgram->setUniformValue(Uniform::PROJECTION,
@@ -96,8 +124,10 @@ void uploadCameraMatrices(GameObject *camera) {
                                                  ->getProjectionMatrix());
 
             shaderProgram->setUniformValue(Uniform::VIEW,
-                                           camera->getComponent<Transform>()
-                                                 ->getWorldToLocalMatrix());
+                                           transform->getWorldToLocalMatrix());
+
+            shaderProgram->setUniformValue(Uniform::VIEW_POSITION,
+                                           transform->getPosition());
         }
     }
 }

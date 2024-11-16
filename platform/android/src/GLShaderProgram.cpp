@@ -79,6 +79,14 @@ void GLShaderProgram::setUniformValue(const char *name, GLint value) {
     glUniform1i(uniformLocation(name), value);
 }
 
+void GLShaderProgram::setUniformValue(const char *name, GLfloat value) {
+    glUniform1f(uniformLocation(name), value);
+}
+
+void GLShaderProgram::setUniformValue(const char *name, GLfloat x, GLfloat y) {
+    glUniform2f(uniformLocation(name), x, y);
+}
+
 void GLShaderProgram::setUniformValue(const char *name,
                                       GLfloat x, GLfloat y, GLfloat z) {
     glUniform3f(uniformLocation(name), x, y, z);
@@ -88,6 +96,17 @@ void GLShaderProgram::setUniformValue(const char *name,
                                       GLfloat x, GLfloat y, GLfloat z,
                                       GLfloat w) {
     glUniform4f(uniformLocation(name), x, y, z, w);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      const glm::vec3 &value) {
+    setUniformValue(name, value.x, value.y, value.z);
+}
+
+void GLShaderProgram::setUniformValue(const char *name,
+                                      const glm::mat3 &value) {
+    glUniformMatrix3fv(uniformLocation(name), 1, GL_FALSE,
+                       glm::value_ptr(value));
 }
 
 void GLShaderProgram::setUniformValue(const char *name,

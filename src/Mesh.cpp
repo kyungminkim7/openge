@@ -1,6 +1,9 @@
 #include <stdexcept>
 #include <utility>
 
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/mat3x3.hpp>
+#include <glm/matrix.hpp>
 #include <openge/GameObject.hpp>
 #include <openge/Material.hpp>
 #include <openge/Mesh.hpp>
@@ -68,9 +71,15 @@ void Mesh::render() {
     vertexArray.bind();
     material->bind();
 
-    auto transform = getGameObject()->getComponent<ge::Transform>();
-    shaderProgram->setUniformValue(ge::RenderPipeline::Uniform::MODEL,
-                                   transform->getLocalToWorldMatrix());
+    const auto transform = getGameObject()->getComponent<ge::Transform>();
+
+    const auto model = glm::scale(transform->getLocalToWorldMatrix(),
+                                  transform->getScale());
+
+    const auto normal = glm::mat3(glm::transpose(glm::inverse(model)));
+
+    shaderProgram->setUniformValue(ge::RenderPipeline::Uniform::MODEL, model);
+    shaderProgram->setUniformValue(ge::RenderPipeline::Uniform::NORMAL, normal);
 
     glDrawElements(renderMode, numIndices, GL_UNSIGNED_INT, nullptr);
 }

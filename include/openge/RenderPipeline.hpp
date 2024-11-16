@@ -22,11 +22,31 @@ namespace Uniform {
 extern const char *MODEL;
 extern const char *VIEW;
 extern const char *PROJECTION;
+extern const char *NORMAL;
+
+extern const char *VIEW_POSITION;
 
 namespace Material {
+extern const char *DIFFUSE_TEXTURE;
+extern const int DIFFUSE_TEXTURE_UNIT;
+
+extern const char *SPECULAR_TEXTURE;
+extern const int SPECULAR_TEXTURE_UNIT;
+
+extern const char *SHINE;
+
 extern const char *COLOR;
-extern const std::vector<const char *> TEXTURES;
 }  // namespace Material
+
+namespace Light {
+extern const char *AMBIENT;
+}  // namespace Light
+
+namespace DirectionalLight {
+extern const char * COUNT;
+extern const std::vector<const char *> DIRECTION;
+extern const std::vector<const char *> COLOR;
+}  // namespace DirectionalLight
 
 }  // namespace Uniform
 
@@ -51,10 +71,10 @@ void destroy();
 std::shared_ptr<GLShaderProgram> getShaderProgram(Program program);
 
 /**
- * Uploads projection and view matrices to active shader programs.
+ * Uploads camera data to shader programs.
  *
  * @param camera Camera.
  */
-void uploadCameraMatrices(GameObject *camera);
+void uploadCamera(GameObject *camera);
 
 }  // namespace ge::RenderPipeline
