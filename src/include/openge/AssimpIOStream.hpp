@@ -1,10 +1,9 @@
 #pragma once
 
-#include <QFile>
 #include <filesystem>
 
 #include <assimp/IOStream.hpp>
-#include <openge/IODevice.hpp>
+#include <openge/File.hpp>
 
 namespace ge {
 
@@ -17,10 +16,8 @@ class AssimpIOStream : public Assimp::IOStream {
      * Opens an IOStream for a file.
      *
      * @param filepath File to open.
-     * @param mode Mode to open file in.
      */
-    explicit AssimpIOStream(const std::filesystem::path &filepath,
-                            IODevice::OpenMode mode);
+    explicit AssimpIOStream(const std::filesystem::path &filepath);
 
     /**
      * Returns the file size.
@@ -61,17 +58,12 @@ class AssimpIOStream : public Assimp::IOStream {
     size_t Tell() const override;
 
     /**
-     * Write binary data.
-     *
-     * @param buffer Buffer containing binary data to write.
-     * @param size Size of each item to write in bytes.
-     * @param count Number of items to write.
-     * @return Number of items written.
+     * Operation not supported and will throw an exception if invoked.
      */
-    size_t Write(const void *buffer, size_t size, size_t count) override;
+    size_t Write(const void *, size_t, size_t) override;
 
  private:
-    QFile file;
+    mutable File file;
 };
 
 }  // namespace ge

@@ -1,5 +1,3 @@
-#include <QIODevice>
-#include <string>
 #include <system_error>
 
 #include <openge/AssimpIOStream.hpp>
@@ -7,17 +5,10 @@
 namespace ge {
 
 AssimpIOStream::AssimpIOStream(const std::filesystem::path &filepath) :
-    file(filepath) {
-    if (!file.open(QIODeviceBase::OpenModeFlag::ReadOnly)) {
-        const auto errorCode = std::make_error_code(std::errc::io_error);
-
-        throw std::system_error(errorCode,
-                                "Failed to open " + std::string(filepath));
-    }
-}
+    file(filepath.string().c_str(), File::Mode::Random) { }
 
 size_t AssimpIOStream::FileSize() const {
-    return file.size();
+    return file.getLength();
 }
 
 void AssimpIOStream::Flush() {
@@ -29,8 +20,7 @@ void AssimpIOStream::Flush() {
 }
 
 size_t AssimpIOStream::Read(void *buffer, size_t size, size_t count) {
-    const auto bytesRead = file.read(reinterpret_cast<char *>(buffer),
-                                     size * count);
+    const auto bytesRead = file.read(buffer, size * count);
 
     return bytesRead > 0 ?
         bytesRead / size :
@@ -38,32 +28,32 @@ size_t AssimpIOStream::Read(void *buffer, size_t size, size_t count) {
 }
 
 aiReturn AssimpIOStream::Seek(size_t offset, aiOrigin origin) {
-    auto position = 0;
+    File::Seek whence;
 
     switch (origin) {
         case aiOrigin_SET:
-            position = offset;
+            whence = File::Seek::Set;
             break;
 
         case aiOrigin_CUR:
-            position = file.pos() + offset;
+            whence = File::Seek::Current;
             break;
 
         case aiOrigin_END:
-            position = file.size() + offset;
+            whence = File::Seek::End;
             break;
 
         default:
             return aiReturn_FAILURE;
     }
 
-    return file.seek(position) ?
-        aiReturn_SUCCESS :
-        aiReturn_FAILURE;
+    return file.seek(offset, whence) == -1 ?
+        aiReturn_FAILURE :
+        aiReturn_SUCCESS;
 }
 
 size_t AssimpIOStream::Tell() const {
-    return file.pos();
+    return file.seek(0, File::Seek::Current);
 }
 
 size_t AssimpIOStream::Write(const void *, size_t, size_t) {

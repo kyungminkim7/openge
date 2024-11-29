@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QIODevice>
+#include <QFile>
 
 namespace ge {
 
-using IODevice = QIODevice;
+using File = QFile;
 
 }  // namespace ge

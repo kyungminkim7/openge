@@ -1,7 +1,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <algorithm>
+#include <numeric>
 #include <stdexcept>
 #include <string>
 
@@ -304,7 +304,7 @@ void addNode(ge::GameObject *gameObject,
         gameObject->addComponent<ge::Mesh>(createMeshData(mesh),
                                            createMaterial(scene, mesh, dir));
     }
-    
+
     for (auto child = node->mChildren;
          child < node->mChildren + node->mNumChildren;
          ++child) {
@@ -341,7 +341,7 @@ GameObjectPtr GameObject::create(const std::filesystem::path &model) {
     if (scene == nullptr ||
         scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
         scene->mRootNode == nullptr) {
-        throw LoadError("Failed to load model from: " + std::string(model));
+        throw LoadError("Failed to load model from: " + model.string());
     }
 
     auto gameObject = create();

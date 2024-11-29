@@ -1,6 +1,9 @@
 #include <array>
+#include <filesystem>
 #include <iterator>
+#include <sstream>
 #include <string>
+#include <system_error>
 #include <type_traits>
 #include <vector>
 
@@ -42,7 +45,17 @@ void GLShader::compileSourceFile(const char *filepath) {
 
     Asset file(filepath, Asset::Mode::Buffer);
     std::vector<char> sourceCode(file.getLength());
-    file.read(sourceCode.data(), sourceCode.size());
+    const auto bytesRead = file.read(sourceCode.data(), sourceCode.size());
+
+    if (bytesRead != sourceCode.size()) {
+        const auto errorCode = std::make_error_code(std::errc::file_too_large);
+
+        std::stringstream errorMessage;
+        errorMessage << "Failed to read " << filepath;
+
+        throw std::filesystem::filesystem_error(errorMessage.str(), errorCode);
+    }
+
     std::string sourceCodeStr(sourceCode.cbegin(), sourceCode.cend());
 
     Log::info("Compiling shader: "s + filepath);

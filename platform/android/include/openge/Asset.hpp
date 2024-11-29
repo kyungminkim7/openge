@@ -32,6 +32,14 @@ class Asset {
     };
 
     /**
+     * Check whether a file exists.
+     *
+     * @param filepath Path of file to check.
+     * @return true if file exists, otherwise false.
+     */
+    static bool exists(const char *filepath);
+
+    /**
      * Opens an asset.
      *
      * @param filepath Asset filepath.
@@ -71,15 +79,16 @@ class Asset {
      *
      * @param buffer Buffer to output data to.
      * @param count Number of bytes to read.
+     * @return number of bytes read, zero on EOF, or <0 on error.
      */
-    void read(void *buffer, std::size_t count);
+    std::size_t read(void *buffer, std::size_t count);
 
     /**
      * Seeks to the specified offset within the asset data.
      *
      * @param offset Data offset to seek to.
      * @param whence Where to specify the offset from.
-     * @return New position.
+     * @return New position on success, otherwise -1 on error.
      */
     std::size_t seek(std::size_t offset, Seek whence);
 

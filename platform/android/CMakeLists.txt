@@ -1,6 +1,7 @@
 target_sources(openge PRIVATE
     src/Asset.cpp
     src/AssetManager.cpp
+    src/AssimpIOStream.cpp
     src/Color.cpp
     src/GLBuffer.cpp
     src/GLFunctions.cpp

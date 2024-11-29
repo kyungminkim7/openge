@@ -21,7 +21,7 @@ class AssimpIOSystem : public Assimp::IOSystem {
      * Open a new file with a given path.
      *
      * @param filepath Path to the file.
-     * @param mode Desired file I/O mode (wb, w, wt, rb, r, rt)
+     * @param mode Desired file I/O mode (rb, r, rt)
      *
      * @return New IOStream interface allowing the lib to access
      *         the underlying file.
