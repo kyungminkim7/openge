@@ -10,4 +10,6 @@ const char * Error::what() const noexcept {
 
 BuildError::BuildError(const std::string &whatArg) : Error(whatArg) {}
 
+LoadError::LoadError(const std::string &whatArg) : Error(whatArg) {}
+
 }  // namespace ge

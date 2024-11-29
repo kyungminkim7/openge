@@ -10,6 +10,7 @@ set(CMAKE_CXX_CPPCHECK
 #=============================
 # Build
 #=============================
+find_package(assimp CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
 # Configure built-in shaders
@@ -58,6 +59,8 @@ target_include_directories(openge PUBLIC
 target_link_libraries(openge
     PUBLIC
         glm::glm
+    PRIVATE
+        assimp::assimp
 )
 
 add_subdirectory(platform)

@@ -41,4 +41,17 @@ class BuildError : public Error {
     explicit BuildError(const std::string &whatArg);
 };
 
+/**
+ * Represents errors that may occur when loading files.
+ */
+class LoadError : public Error {
+ public:
+    /**
+     * Constructs a LoadError with the given message.
+     *
+     * @param whatArg Explanatory error message.
+     */
+    explicit LoadError(const std::string &whatArg);
+};
+
 }  // namespace ge

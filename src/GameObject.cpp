@@ -1,7 +1,16 @@
-#include <stdexcept>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
+#include <algorithm>
+#include <stdexcept>
+#include <string>
+
+#include <assimp/Importer.hpp>
+#include <glm/vec3.hpp>
 #include <openge/ColorConstants.hpp>
+#include <openge/Exception.hpp>
 #include <openge/GLBuffer.hpp>
+#include <openge/GLTexture.hpp>
 #include <openge/GameObject.hpp>
 #include <openge/Image.hpp>
 #include <openge/Material.hpp>
@@ -10,6 +19,18 @@
 #include <openge/Transform.hpp>
 
 namespace {
+
+using ge::RenderPipeline::Program;
+using ge::RenderPipeline::Uniform::Material::DIFFUSE_TEXTURE;
+using ge::RenderPipeline::Uniform::Material::DIFFUSE_TEXTURE_UNIT;
+using ge::RenderPipeline::Uniform::Material::SPECULAR_TEXTURE;
+using ge::RenderPipeline::Uniform::Material::SPECULAR_TEXTURE_UNIT;
+
+std::shared_ptr<ge::GLTexture> createBlankTexture() {
+    ge::Image image(1, 1, ge::Image::Format::Format_RGBA8888);
+    image.fill(ge::ColorConstants::WHITE);
+    return std::make_shared<ge::GLTexture>(image);
+}
 
 ge::Mesh::MeshData createCubeMeshData() {
     return {
@@ -171,25 +192,128 @@ ge::Mesh::MeshData createPrimitiveMeshData(
 }
 
 std::shared_ptr<ge::Material> createPrimitiveMaterial() {
-    using ge::RenderPipeline::Program;
-    using ge::RenderPipeline::Uniform::Material::DIFFUSE_TEXTURE;
-    using ge::RenderPipeline::Uniform::Material::DIFFUSE_TEXTURE_UNIT;
-    using ge::RenderPipeline::Uniform::Material::SPECULAR_TEXTURE;
-    using ge::RenderPipeline::Uniform::Material::SPECULAR_TEXTURE_UNIT;
-
     auto shaderProgram =
         ge::RenderPipeline::getShaderProgram(Program::Standard);
 
-    ge::Image image(1, 1, ge::Image::Format::Format_RGBA8888);
-    image.fill(ge::ColorConstants::WHITE);
-
-    auto texture = std::make_shared<ge::GLTexture>(image);
+    auto texture = createBlankTexture();
 
     auto material = std::make_shared<ge::Material>(std::move(shaderProgram));
     material->addTexture(DIFFUSE_TEXTURE, DIFFUSE_TEXTURE_UNIT, texture);
     material->addTexture(SPECULAR_TEXTURE, SPECULAR_TEXTURE_UNIT, texture);
 
     return material;
+}
+
+unsigned int getNumIndices(const aiMesh *mesh) {
+    return std::accumulate(mesh->mFaces,
+                           mesh->mFaces + mesh->mNumFaces,
+                           0u,
+                           [](auto sum, const auto &face){
+                               return sum + face.mNumIndices;
+                           });
+}
+
+ge::Mesh::MeshData createMeshData(const aiMesh *mesh) {
+    ge::Mesh::MeshData data {
+        std::vector<ge::Mesh::Position>(),
+        std::vector<ge::Mesh::Normal>(),
+        std::vector<ge::Mesh::TextureCoordinate>(),
+        std::vector<ge::Mesh::Index>(),
+        ge::GLBuffer::UsagePattern::StaticDraw,
+        ge::Mesh::Topology::Triangles
+    };
+
+    data.positions.reserve(mesh->mNumVertices);
+    data.normals.reserve(mesh->mNumVertices);
+    data.textureCoordinates.reserve(mesh->mNumVertices);
+
+    for (auto i = 0u; i < mesh->mNumVertices; ++i) {
+        const auto &position = mesh->mVertices[i];
+        data.positions.emplace_back(position.x, position.y, position.z);
+
+        const auto &normal = mesh->mNormals[i];
+        data.normals.emplace_back(normal.x, normal.y, normal.z);
+
+        mesh->mTextureCoords[0] ?
+            data.textureCoordinates.emplace_back(mesh->mTextureCoords[0][i].x,
+                                                 mesh->mTextureCoords[0][i].y) :
+            data.textureCoordinates.emplace_back(0.0f, 0.0f);
+    }
+
+    data.indices.reserve(getNumIndices(mesh));
+
+    for (auto face = mesh->mFaces;
+         face < mesh->mFaces + mesh->mNumFaces;
+         ++face) {
+        data.indices.insert(data.indices.cend(),
+                            face->mIndices,
+                            face->mIndices + face->mNumIndices);
+    }
+
+    return data;
+}
+
+std::shared_ptr<ge::GLTexture> createTexture(const aiScene *scene,
+                                             const aiMesh *mesh,
+                                             const std::filesystem::path &dir,
+                                             aiTextureType type) {
+    const auto material = scene->mMaterials[mesh->mMaterialIndex];
+
+    if (material->GetTextureCount(type) == 0) {
+        return createBlankTexture();
+    }
+
+    aiString filename;
+    material->GetTexture(type, 0, &filename);
+    const std::string filepath(dir / filename.C_Str());
+
+    auto texture = std::make_shared<ge::GLTexture>(ge::Image(filepath.c_str()));
+    texture->setWrapMode(ge::GLTexture::WrapMode::Repeat);
+    texture->setMinificationFilter(ge::GLTexture::Filter::LinearMipMapLinear);
+    texture->setMagnificationFilter(ge::GLTexture::Filter::Linear);
+    return texture;
+}
+
+std::shared_ptr<ge::Material> createMaterial(const aiScene *scene,
+                                             const aiMesh *mesh,
+                                             const std::filesystem::path &dir) {
+    auto shaderProgram =
+        ge::RenderPipeline::getShaderProgram(Program::Standard);
+
+    auto diffuseTexture = createTexture(scene, mesh, dir,
+                                        aiTextureType_DIFFUSE);
+
+    auto specularTexture = createTexture(scene, mesh, dir,
+                                         aiTextureType_SPECULAR);
+
+    auto material = std::make_shared<ge::Material>(std::move(shaderProgram));
+
+    material->addTexture(DIFFUSE_TEXTURE, DIFFUSE_TEXTURE_UNIT,
+                         std::move(diffuseTexture));
+
+    material->addTexture(SPECULAR_TEXTURE, SPECULAR_TEXTURE_UNIT,
+                         std::move(specularTexture));
+
+    return material;
+}
+
+void addNode(ge::GameObject *gameObject,
+             const aiScene *scene,
+             const aiNode *node,
+             const std::filesystem::path &dir) {
+    for (auto i = node->mMeshes;
+         i < node->mMeshes + node->mNumMeshes;
+         ++i) {
+        auto mesh = scene->mMeshes[*i];
+        gameObject->addComponent<ge::Mesh>(createMeshData(mesh),
+                                           createMaterial(scene, mesh, dir));
+    }
+    
+    for (auto child = node->mChildren;
+         child < node->mChildren + node->mNumChildren;
+         ++child) {
+        addNode(gameObject, scene, *child, dir);
+    }
 }
 
 }  // namespace
@@ -207,6 +331,24 @@ GameObjectPtr GameObject::create(Primitive primitive) {
 
     gameObject->addComponent<Mesh>(createPrimitiveMeshData(primitive),
                                    createPrimitiveMaterial());
+
+    return gameObject;
+}
+
+GameObjectPtr GameObject::create(const std::filesystem::path &model) {
+    auto gameObject = create();
+
+    Assimp::Importer importer;
+    const auto flags = aiProcess_Triangulate | aiProcess_FlipUVs;
+    const auto scene = importer.ReadFile(model, flags);
+
+    if (scene == nullptr ||
+        scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
+        scene->mRootNode == nullptr) {
+        throw LoadError("Failed to load model from: " + std::string(model));
+    }
+
+    addNode(gameObject.get(), scene, scene->mRootNode, model.parent_path());
 
     return gameObject;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
@@ -38,6 +39,13 @@ class GameObject : public std::enable_shared_from_this<GameObject> {
      * @return Constructed primitive game object.
      */
     static GameObjectPtr create(Primitive primitive);
+
+    /**
+     * Creates a game object from a 3D model file.
+     *
+     * @param model 3D model filepath.
+     */
+     static GameObjectPtr create(const std::filesystem::path &model);
 
     /**
      * Add a component to the game object.

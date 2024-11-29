@@ -44,6 +44,7 @@ class OpenGERecipe(ConanFile):
         self.tool_requires("doxygen/1.9.4")
 
     def requirements(self):
+        self.requires("assimp/5.4.3")
         self.requires("glm/1.0.1", transitive_headers=True)
 
         if not self.settings.os == "Android":
