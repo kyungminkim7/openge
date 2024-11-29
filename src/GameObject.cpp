@@ -7,6 +7,7 @@
 
 #include <assimp/Importer.hpp>
 #include <glm/vec3.hpp>
+#include <openge/AssimpIOSystem.hpp>
 #include <openge/ColorConstants.hpp>
 #include <openge/Exception.hpp>
 #include <openge/GLBuffer.hpp>
@@ -214,19 +215,15 @@ unsigned int getNumIndices(const aiMesh *mesh) {
 }
 
 ge::Mesh::MeshData createMeshData(const aiMesh *mesh) {
-    ge::Mesh::MeshData data {
-        std::vector<ge::Mesh::Position>(),
-        std::vector<ge::Mesh::Normal>(),
-        std::vector<ge::Mesh::TextureCoordinate>(),
-        std::vector<ge::Mesh::Index>(),
-        ge::GLBuffer::UsagePattern::StaticDraw,
-        ge::Mesh::Topology::Triangles
-    };
-
+    ge::Mesh::MeshData data;
     data.positions.reserve(mesh->mNumVertices);
     data.normals.reserve(mesh->mNumVertices);
     data.textureCoordinates.reserve(mesh->mNumVertices);
+    data.indices.reserve(getNumIndices(mesh));
+    data.usagePattern = ge::GLBuffer::UsagePattern::StaticDraw;
+    data.topology = ge::Mesh::Topology::Triangles;
 
+    // Load vertex data.
     for (auto i = 0u; i < mesh->mNumVertices; ++i) {
         const auto &position = mesh->mVertices[i];
         data.positions.emplace_back(position.x, position.y, position.z);
@@ -240,8 +237,7 @@ ge::Mesh::MeshData createMeshData(const aiMesh *mesh) {
             data.textureCoordinates.emplace_back(0.0f, 0.0f);
     }
 
-    data.indices.reserve(getNumIndices(mesh));
-
+    // Load indices.
     for (auto face = mesh->mFaces;
          face < mesh->mFaces + mesh->mNumFaces;
          ++face) {
@@ -336,9 +332,9 @@ GameObjectPtr GameObject::create(Primitive primitive) {
 }
 
 GameObjectPtr GameObject::create(const std::filesystem::path &model) {
-    auto gameObject = create();
-
     Assimp::Importer importer;
+    importer.SetIOHandler(new AssimpIOSystem);
+
     const auto flags = aiProcess_Triangulate | aiProcess_FlipUVs;
     const auto scene = importer.ReadFile(model, flags);
 
@@ -348,8 +344,8 @@ GameObjectPtr GameObject::create(const std::filesystem::path &model) {
         throw LoadError("Failed to load model from: " + std::string(model));
     }
 
+    auto gameObject = create();
     addNode(gameObject.get(), scene, scene->mRootNode, model.parent_path());
-
     return gameObject;
 }
 
