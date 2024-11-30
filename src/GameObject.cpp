@@ -27,6 +27,8 @@ using ge::RenderPipeline::Uniform::Material::DIFFUSE_TEXTURE_UNIT;
 using ge::RenderPipeline::Uniform::Material::SPECULAR_TEXTURE;
 using ge::RenderPipeline::Uniform::Material::SPECULAR_TEXTURE_UNIT;
 
+std::unordered_map<std::string, std::weak_ptr<ge::GLTexture>> textureCache;
+
 std::shared_ptr<ge::GLTexture> createBlankTexture() {
     ge::Image image(1, 1, ge::Image::Format::Format_RGBA8888);
     image.fill(ge::ColorConstants::WHITE);
@@ -263,10 +265,26 @@ std::shared_ptr<ge::GLTexture> createTexture(const aiScene *scene,
     material->GetTexture(type, 0, &filename);
     const std::string filepath(dir / filename.C_Str());
 
-    auto texture = std::make_shared<ge::GLTexture>(ge::Image(filepath.c_str()));
+    auto texture = textureCache[filepath].lock();
+    if (texture) {
+        return texture;
+    }
+
+    auto textureDeleter = [filepath](auto *texture){
+        textureCache.erase(filepath);
+        delete texture;
+    };
+
+    texture = std::shared_ptr<ge::GLTexture>(
+        new ge::GLTexture(ge::Image(filepath.c_str())),
+        textureDeleter);
+
     texture->setWrapMode(ge::GLTexture::WrapMode::Repeat);
     texture->setMinificationFilter(ge::GLTexture::Filter::LinearMipMapLinear);
     texture->setMagnificationFilter(ge::GLTexture::Filter::Linear);
+
+    textureCache[filepath] = texture;
+
     return texture;
 }
 
