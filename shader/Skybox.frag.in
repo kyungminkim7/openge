@@ -1,0 +1,13 @@
+#version ${GLSL_VERSION}
+
+${GLSL_PRECISION}
+
+in vec3 vTextureCoordinate;
+
+uniform samplerCube skybox;
+
+out vec4 fragColor;
+
+void main() {
+    fragColor = texture(skybox, vTextureCoordinate);
+}

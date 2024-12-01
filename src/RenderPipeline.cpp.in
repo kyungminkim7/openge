@@ -10,15 +10,20 @@
 
 namespace {
 
-constexpr std::array<const char *, 1> VERTEX_SHADERS {
-    R"-(${STANDARD_VERT})-"
+constexpr auto NUM_BUILTIN_SHADERS = 2;
+
+constexpr std::array<const char *, NUM_BUILTIN_SHADERS> VERTEX_SHADERS {
+    R"-(${STANDARD_VERT})-",
+    R"-(${SKYBOX_VERT})-",
 };
 
-constexpr std::array<const char *, 1> FRAGMENT_SHADERS {
-    R"-(${STANDARD_FRAG})-"
+constexpr std::array<const char *, NUM_BUILTIN_SHADERS> FRAGMENT_SHADERS {
+    R"-(${STANDARD_FRAG})-",
+    R"-(${SKYBOX_FRAG})-",
 };
 
-std::vector<std::shared_ptr<ge::GLShaderProgram>> shaderPrograms(1, nullptr);
+std::vector<std::shared_ptr<ge::GLShaderProgram>>
+    shaderPrograms(NUM_BUILTIN_SHADERS, nullptr);
 
 }  // namespace
 
@@ -37,6 +42,9 @@ namespace Uniform {
     const char *NORMAL = "normal";
 
     const char *VIEW_POSITION = "viewPosition";
+
+    const char *SKYBOX_TEXTURE = "skybox";
+    const int SKYBOX_TEXTURE_UNIT = 0;
 
     namespace Material {
         const char *DIFFUSE_TEXTURE = "material.diffuse";

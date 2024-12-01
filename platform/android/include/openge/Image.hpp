@@ -54,6 +54,13 @@ class Image {
     const std::uint8_t * bits() const;
 
     /**
+     * Returns a copy of the image in the given format.
+     *
+     * @param format Format to convert image to.
+     */
+    Image convertToFormat(Image::Format format);
+
+    /**
      * Fills the entire image with the given color.
      *
      * @param color Color to fill the image with.

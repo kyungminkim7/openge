@@ -30,8 +30,16 @@ configure_file(shader/Standard.frag.in
 configure_file(shader/Standard.vert.in
                shader/Standard.vert)
 
+configure_file(shader/Skybox.frag.in
+               shader/Skybox.frag)
+
+configure_file(shader/Skybox.vert.in
+               shader/Skybox.vert)
+
 file(READ "${CMAKE_CURRENT_BINARY_DIR}/shader/Standard.frag" STANDARD_FRAG)
 file(READ "${CMAKE_CURRENT_BINARY_DIR}/shader/Standard.vert" STANDARD_VERT)
+file(READ "${CMAKE_CURRENT_BINARY_DIR}/shader/Skybox.frag" SKYBOX_FRAG)
+file(READ "${CMAKE_CURRENT_BINARY_DIR}/shader/Skybox.vert" SKYBOX_VERT)
 
 configure_file(src/RenderPipeline.cpp.in
                src/RenderPipeline.cpp)
@@ -50,6 +58,7 @@ add_library(openge
     src/Light.cpp
     src/Material.cpp
     src/Mesh.cpp
+    src/Skybox.cpp
     src/Transform.cpp
 )
 

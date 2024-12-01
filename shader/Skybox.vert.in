@@ -1,0 +1,15 @@
+#version ${GLSL_VERSION}
+
+in vec3 aPosition;
+
+uniform mat4 view;
+uniform mat4 projection;
+
+out vec3 vTextureCoordinate;
+
+void main() {
+    vec4 position = projection * mat4(mat3(view)) * vec4(aPosition, 1.0f);
+    gl_Position = position.xyww;
+
+    vTextureCoordinate = aPosition;
+}

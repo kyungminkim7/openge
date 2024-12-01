@@ -60,6 +60,16 @@ std::uint8_t * Image::bits() {
     return image.data();
 }
 
+Image Image::convertToFormat(Image::Format format) {
+    switch (format) {
+        case ge::Image::Format::Format_RGBA8888:
+            return *this;
+
+        default:
+            throw std::invalid_argument("Image format is not supported");
+    }
+}
+
 const std::uint8_t * Image::bits() const {
     return image.data();
 }

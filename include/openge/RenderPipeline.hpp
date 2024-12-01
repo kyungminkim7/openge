@@ -26,6 +26,9 @@ extern const char *NORMAL;
 
 extern const char *VIEW_POSITION;
 
+extern const char *SKYBOX_TEXTURE;
+extern const int SKYBOX_TEXTURE_UNIT;
+
 namespace Material {
 extern const char *DIFFUSE_TEXTURE;
 extern const int DIFFUSE_TEXTURE_UNIT;
@@ -54,7 +57,8 @@ extern const std::vector<const char *> COLOR;
  * Built-in shader program.
  */
 enum class Program {
-    Standard
+    Standard,
+    Skybox
 };
 
 /**
