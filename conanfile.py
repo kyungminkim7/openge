@@ -1,5 +1,5 @@
 from conan import ConanFile
-from conan.tools.build import check_max_cppstd, check_min_cppstd, can_run
+from conan.tools.build import check_min_cppstd, can_run
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
 
 
@@ -8,7 +8,6 @@ class OpenGERecipe(ConanFile):
     version = "1.0"
     package_type = "library"
 
-    # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
 
     options = {
@@ -22,7 +21,6 @@ class OpenGERecipe(ConanFile):
         "qt*:shared": True
     }
 
-    # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", \
         "src/*", "include/*", "platform/*", "shader/*", \
         "mock/*", "test/*"

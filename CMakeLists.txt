@@ -4,8 +4,10 @@ project(openge CXX)
 #=============================
 # Static Analysis
 #=============================
-set(CMAKE_CXX_CPPCHECK
-    "cppcheck;--error-exitcode=1;--inline-suppr;--enable=performance,portability")
+set(CMAKE_CXX_CPPCHECK cppcheck
+    --error-exitcode=1
+    --inline-suppr
+    --enable=performance,portability)
 
 #=============================
 # Build
@@ -15,13 +17,13 @@ find_package(glm CONFIG REQUIRED)
 
 # Configure built-in shaders
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
-    set(GLSL_VERSION "320 es")
+  set(GLSL_VERSION "320 es")
 
-    string(JOIN "\n" GLSL_PRECISION
-           "precision mediump float;"
-           "precision mediump sampler2DShadow;")
+  string(JOIN "\n" GLSL_PRECISION
+         "precision mediump float;"
+         "precision mediump sampler2DShadow;")
 else()
-    set(GLSL_VERSION "330 core")
+  set(GLSL_VERSION "330 core")
 endif()
 
 configure_file(shader/Standard.frag.in
@@ -83,8 +85,8 @@ add_subdirectory(platform)
 # Test
 #=============================
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
-    enable_testing()
-    add_subdirectory(test)
+  enable_testing()
+  add_subdirectory(test)
 endif()
 
 #=============================

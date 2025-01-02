@@ -23,4 +23,6 @@ target_link_libraries(openge_test
     GTest::gtest_main
 )
 
-gtest_discover_tests(openge_test)
+gtest_discover_tests(openge_test
+    XML_OUTPUT_DIR report
+)
