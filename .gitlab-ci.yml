@@ -104,6 +104,6 @@ deploy-openge:
     - conan remote add --insecure nexus $CONAN_REPO
     - conan remote login --password ${NEXUS_PASSWORD} nexus ${NEXUS_USER}
     - conan create --remote nexus .
-    - conan upload --remote nexus 'openge/*'
+    - conan upload --remote nexus --confirm 'openge/*'
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

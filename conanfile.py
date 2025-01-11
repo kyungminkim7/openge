@@ -1,11 +1,11 @@
 from conan import ConanFile
 from conan.tools.build import check_min_cppstd, can_run
 from conan.tools.cmake import CMakeToolchain, CMake, cmake_layout, CMakeDeps
+from conan.tools.scm import Git
 
 
 class OpenGERecipe(ConanFile):
     name = "openge"
-    version = "1.0"
     package_type = "library"
 
     settings = "os", "compiler", "build_type", "arch"
@@ -24,6 +24,12 @@ class OpenGERecipe(ConanFile):
     exports_sources = "CMakeLists.txt", \
         "src/*", "include/*", "platform/*", "shader/*", \
         "mock/*", "test/*"
+
+    def set_version(self):
+        git = Git(self, self.recipe_folder)
+        tag = git.run('describe --tags')
+        self.version = \
+            '.'.join(tag.split('-')[:-1]) if '-' in tag else f"{tag}.0"
 
     def validate(self):
         check_min_cppstd(self, "17")
