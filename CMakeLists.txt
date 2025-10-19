@@ -14,6 +14,7 @@ set(CMAKE_CXX_CPPCHECK cppcheck
 #=============================
 find_package(assimp CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 
 # Configure built-in shaders
 if(CMAKE_SYSTEM_NAME STREQUAL "Android")
@@ -77,6 +78,7 @@ target_link_libraries(openge
         glm::glm
     PRIVATE
         assimp::assimp
+        spdlog::spdlog
 )
 
 add_subdirectory(platform)
