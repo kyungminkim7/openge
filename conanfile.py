@@ -50,6 +50,7 @@ class OpenGERecipe(ConanFile):
     def requirements(self):
         self.requires("assimp/5.4.3")
         self.requires("glm/1.0.1", transitive_headers=True)
+        self.requires("spdlog/1.16.0", transitive_headers=True)
 
         if not self.settings.os == "Android":
             self.requires("qt/6.4.2", transitive_headers=True)
