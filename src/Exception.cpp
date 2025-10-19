@@ -12,4 +12,6 @@ BuildError::BuildError(const std::string &whatArg) : Error(whatArg) {}
 
 LoadError::LoadError(const std::string &whatArg) : Error(whatArg) {}
 
+WindowError::WindowError(const std::string &whatArg) : Error(whatArg) {}
+
 }  // namespace ge

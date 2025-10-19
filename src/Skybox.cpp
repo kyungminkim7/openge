@@ -65,7 +65,6 @@ Skybox::Skybox(const char *front, const char *back,
     shaderProgram(RenderPipeline::getShaderProgram(RenderPipeline::Program::Skybox)),
     vertexArray(),
     vertexBuffer(GLBuffer::Type::VertexBuffer) {
-    initializeOpenGLFunctions();
 
     shaderProgram->bind();
     uploadVertexData();

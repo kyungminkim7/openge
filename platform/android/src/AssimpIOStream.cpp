@@ -5,10 +5,10 @@
 namespace ge {
 
 AssimpIOStream::AssimpIOStream(const std::filesystem::path &filepath) :
-    file(filepath.string().c_str(), File::Mode::Random) { }
+    asset(filepath.string().c_str(), Asset::Mode::Random) { }
 
 size_t AssimpIOStream::FileSize() const {
-    return file.getLength();
+    return asset.getLength();
 }
 
 void AssimpIOStream::Flush() {
@@ -20,7 +20,7 @@ void AssimpIOStream::Flush() {
 }
 
 size_t AssimpIOStream::Read(void *buffer, size_t size, size_t count) {
-    const auto bytesRead = file.read(buffer, size * count);
+    const auto bytesRead = asset.read(buffer, size * count);
 
     return bytesRead > 0 ?
         bytesRead / size :
@@ -28,32 +28,32 @@ size_t AssimpIOStream::Read(void *buffer, size_t size, size_t count) {
 }
 
 aiReturn AssimpIOStream::Seek(size_t offset, aiOrigin origin) {
-    File::Seek whence;
+    Asset::Seek whence;
 
     switch (origin) {
         case aiOrigin_SET:
-            whence = File::Seek::Set;
+            whence = Asset::Seek::Set;
             break;
 
         case aiOrigin_CUR:
-            whence = File::Seek::Current;
+            whence = Asset::Seek::Current;
             break;
 
         case aiOrigin_END:
-            whence = File::Seek::End;
+            whence = Asset::Seek::End;
             break;
 
         default:
             return aiReturn_FAILURE;
     }
 
-    return file.seek(offset, whence) == -1 ?
+    return asset.seek(offset, whence) == -1 ?
         aiReturn_FAILURE :
         aiReturn_SUCCESS;
 }
 
 size_t AssimpIOStream::Tell() const {
-    return file.seek(0, File::Seek::Current);
+    return asset.seek(0, Asset::Seek::Current);
 }
 
 size_t AssimpIOStream::Write(const void *, size_t, size_t) {

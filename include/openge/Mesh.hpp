@@ -8,7 +8,6 @@
 #include <glm/vec3.hpp>
 #include <openge/Component.hpp>
 #include <openge/GLBuffer.hpp>
-#include <openge/GLFunctions.hpp>
 #include <openge/GLShaderProgram.hpp>
 #include <openge/GLVertexArrayObject.hpp>
 
@@ -26,7 +25,7 @@ class Material;
  * vertices, normals, and texture coordinate arrays, each being 100 in size.
  * Data for i-th vertex is at index "i" in each array.
  */
-class Mesh : public Component, protected GLFunctions {
+class Mesh : public Component {
  public:
     /**
      * Topology of Mesh faces.

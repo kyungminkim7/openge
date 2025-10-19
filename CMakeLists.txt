@@ -50,14 +50,19 @@ configure_file(src/RenderPipeline.cpp.in
 # OpenGE library
 add_library(openge
     "${CMAKE_CURRENT_BINARY_DIR}/src/RenderPipeline.cpp"
-    src/AssimpIOSystem.cpp
     src/Camera.cpp
+    src/Color.cpp
     src/ColorConstants.cpp
     src/Component.cpp
     src/CoordinateSystem.cpp
     src/Exception.cpp
     src/GameObject.cpp
-    src/InputSystem.cpp
+    src/GLBuffer.cpp
+    src/GLShader.cpp
+    src/GLShaderProgram.cpp
+    src/GLTexture.cpp
+    src/GLVertexArrayObject.cpp
+    src/Image.cpp
     src/Light.cpp
     src/Material.cpp
     src/Mesh.cpp

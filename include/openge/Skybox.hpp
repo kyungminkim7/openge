@@ -3,7 +3,6 @@
 #include <memory>
 
 #include <openge/GLBuffer.hpp>
-#include <openge/GLFunctions.hpp>
 #include <openge/GLShaderProgram.hpp>
 #include <openge/GLVertexArrayObject.hpp>
 
@@ -13,7 +12,7 @@ namespace ge {
  * Wrapper around the entire scene that shows what the world looks like beyond
  * your geometry.
  */
-class Skybox : protected GLFunctions {
+class Skybox {
  public:
     /**
      * Construct a skybox from a set of images for each face.

@@ -32,6 +32,13 @@ class Asset {
     };
 
     /**
+     * Reads the entire asset data as a string.
+     *
+     * @return Asset data as a string.
+     */
+    static std::string read(const char *filepath);
+
+    /**
      * Check whether a file exists.
      *
      * @param filepath Path of file to check.

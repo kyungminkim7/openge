@@ -18,7 +18,7 @@ class OpenGERecipe(ConanFile):
     default_options = {
         "shared": False,
         "fPIC": True,
-        "qt*:shared": True
+        "glad*:gl_profile": "core",
     }
 
     exports_sources = "CMakeLists.txt", \
@@ -50,10 +50,12 @@ class OpenGERecipe(ConanFile):
     def requirements(self):
         self.requires("assimp/5.4.3")
         self.requires("glm/1.0.1", transitive_headers=True)
-        self.requires("spdlog/1.16.0", transitive_headers=True)
+        self.requires("spdlog/1.16.0")
 
         if not self.settings.os == "Android":
-            self.requires("qt/6.4.2", transitive_headers=True)
+            self.requires("glad/0.1.36", transitive_headers=True)
+            self.requires("glfw/3.4", transitive_headers=True)
+            self.requires("stb/cci.20230920")
 
         self.test_requires("gtest/[~1.14]")
 
@@ -62,12 +64,17 @@ class OpenGERecipe(ConanFile):
         if self.settings.os == "Android":
             self.cpp.source.includedirs += ["platform/android/include"]
         else:
-            self.cpp.source.includedirs += ["platform/qt/include"]
+            self.cpp.source.includedirs += ["platform/pc/include"]
 
     def generate(self):
         deps = CMakeDeps(self)
         deps.generate()
+
         tc = CMakeToolchain(self)
+
+        if not self.settings.os == "Android":
+            tc.preprocessor_definitions["GLFW_INCLUDE_NONE"] = None
+
         tc.generate()
 
     def build(self):
@@ -84,6 +91,9 @@ class OpenGERecipe(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["openge"]
+
         if self.settings.os == "Android":
             self.cpp_info.system_libs = ["GLESv3", "android",
                                          "jnigraphics", "log"]
+        else:
+            self.cpp_info.defines.append("GLFW_INCLUDE_NONE")

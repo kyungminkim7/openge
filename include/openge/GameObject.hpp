@@ -95,4 +95,4 @@ class GameObject : public std::enable_shared_from_this<GameObject> {
 
 }  // namespace ge
 
-#include <openge/GameObjectImpl.hpp>
+#include <openge/impl/GameObject.hpp>

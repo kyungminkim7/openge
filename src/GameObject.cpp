@@ -351,7 +351,7 @@ GameObjectPtr GameObject::create(Primitive primitive) {
 
 GameObjectPtr GameObject::create(const std::filesystem::path &model) {
     Assimp::Importer importer;
-    importer.SetIOHandler(new AssimpIOSystem);
+    importer.SetIOHandler(AssimpIOSystem::create());
 
     const auto flags = aiProcess_Triangulate | aiProcess_FlipUVs;
     const auto scene = importer.ReadFile(model, flags);

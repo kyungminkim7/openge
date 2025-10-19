@@ -3,12 +3,12 @@
 #include <filesystem>
 
 #include <assimp/IOStream.hpp>
-#include <openge/File.hpp>
+#include <openge/Asset.hpp>
 
 namespace ge {
 
 /**
- * IOStream implementation for reading 3D models through the Qt resource system.
+ * IOStream implementation for reading 3D models.
  */
 class AssimpIOStream : public Assimp::IOStream {
  public:
@@ -63,7 +63,7 @@ class AssimpIOStream : public Assimp::IOStream {
     size_t Write(const void *, size_t, size_t) override;
 
  private:
-    mutable File file;
+    mutable Asset asset;
 };
 
 }  // namespace ge
