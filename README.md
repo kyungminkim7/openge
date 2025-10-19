@@ -2,7 +2,7 @@
 
 OpenGE is a cross-platform C++ game engine for Desktop and Android platforms.
 This project produces a Conan package that can be imported for use with
-Qt or Android Studio projects.
+PC or Android Studio projects.
 
 ## Build - Linux
 
@@ -12,7 +12,6 @@ The easiest way to build this project is through Docker using the provided Docke
 Dependencies:
 
 - Build: Docker
-- Run: Qt 6
 
 Build Steps:
 
@@ -29,10 +28,10 @@ Build Steps:
     git clone https://github.com/kyungminkim7/openge.git
     ```
 
-3. Create Docker image for building the project:
+3. Create a Docker image for building the project:
 
     ```bash
-    docker build -t conan openge
+    docker build -t openge openge
     ```
 
 4. Run Docker container for building projects:
@@ -41,7 +40,7 @@ Build Steps:
     docker run --rm -it \
         -v $(pwd):$(pwd) -w $(pwd) \
         -e CONAN_HOME=$(pwd)/.conan2 \
-        conan
+        openge
     ```
 
 5. Generate Conan profile:

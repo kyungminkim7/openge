@@ -1,7 +1,9 @@
 #include <filesystem>
 #include <ios>
+#include <sstream>
 #include <system_error>
 #include <type_traits>
+#include <vector>
 
 #include <openge/Asset.hpp>
 #include <openge/AssetManager.hpp>
@@ -46,6 +48,23 @@ std::size_t Asset::getLength() const {
 
 std::size_t Asset::getRemainingLength() const {
     return AAsset_getRemainingLength64(asset);
+}
+
+std::string Asset::read(const char *filepath) {
+    Asset file(filepath, Asset::Mode::Buffer);
+    std::vector<char> data(file.getLength());
+    const auto bytesRead = file.read(data.data(), data.size());
+
+    if (bytesRead != data.size()) {
+        const auto errorCode = std::make_error_code(std::errc::file_too_large);
+
+        std::ostringstream errorMessage;
+        errorMessage << "Failed to read " << filepath;
+
+        throw std::filesystem::filesystem_error(errorMessage.str(), errorCode);
+    }
+
+    return {data.cbegin(), data.cend()};
 }
 
 std::size_t Asset::read(void *buffer, std::size_t count) {

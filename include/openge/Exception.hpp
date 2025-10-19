@@ -54,4 +54,17 @@ class LoadError : public Error {
     explicit LoadError(const std::string &whatArg);
 };
 
+/**
+ * Represents errors that may occur when creating or managing windows.
+ */
+class WindowError : public Error {
+ public:
+    /**
+     * Constructs a WindowError with the given message.
+     *
+     * @param whatArg Explanatory error message.
+     */
+    explicit WindowError(const std::string &whatArg);
+};
+
 }  // namespace ge

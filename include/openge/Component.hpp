@@ -1,6 +1,8 @@
 #pragma once
 
+#include <functional>
 #include <memory>
+#include <vector>
 
 namespace ge {
 
@@ -18,7 +20,14 @@ class Component {
      */
     explicit Component(std::weak_ptr<GameObject> gameObject);
 
-    virtual ~Component() = default;
+    virtual ~Component();
+
+    /**
+     * Add an input event listener for this component and registers automatic
+     * cleanup upon component destruction.
+     */
+    template<typename Event, typename Listener>
+    void addInputListener(Listener listener);
 
     /**
      * Overridable behavior called once upon being added to a GameObject.
@@ -39,7 +48,13 @@ class Component {
     std::shared_ptr<GameObject> getGameObject();
 
  private:
+    using CleanUp = std::function<void()>;
+
     std::weak_ptr<GameObject> gameObject;
+
+    std::vector<CleanUp> cleanUp;
 };
 
 }  // namespace ge
+
+#include <openge/impl/Component.hpp>

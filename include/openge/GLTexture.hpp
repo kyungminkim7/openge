@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GLES3/gl32.h>
+#include <openge/OpenGL.hpp>
 
 namespace ge {
 
@@ -27,7 +27,6 @@ class GLTexture {
         Target2DArray = GL_TEXTURE_2D_ARRAY,
         Target3D = GL_TEXTURE_3D,
         TargetCubeMap = GL_TEXTURE_CUBE_MAP,
-        TargetCubeMapArray = GL_TEXTURE_CUBE_MAP_ARRAY,
         Target2DMultisample = GL_TEXTURE_2D_MULTISAMPLE,
         Target2DMultisampleArray = GL_TEXTURE_2D_MULTISAMPLE_ARRAY,
         TargetBuffer = GL_TEXTURE_BUFFER

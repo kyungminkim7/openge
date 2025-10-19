@@ -47,7 +47,6 @@ Mesh::Mesh(std::shared_ptr<GameObject> gameObject,
     elementBuffer(ge::GLBuffer::Type::IndexBuffer),
     renderMode(getRenderMode(meshData.topology)),
     material(std::move(material)) {
-    initializeOpenGLFunctions();
 
     vertexArray.create();
 

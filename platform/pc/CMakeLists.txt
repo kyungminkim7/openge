@@ -1,12 +1,11 @@
+find_package(glad CONFIG REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
+
 target_sources(openge PRIVATE
-    src/Asset.cpp
-    src/AssetManager.cpp
-    src/AssimpIOStream.cpp
-    src/AssimpIOSystem.cpp
     src/GLShader.cpp
     src/Image.cpp
-    src/ImageDecoder.cpp
-    src/Log.cpp
+    src/STBImage.cpp
+    src/Window.cpp
 )
 
 target_include_directories(openge
@@ -18,10 +17,9 @@ target_include_directories(openge
 
 target_link_libraries(openge
     PUBLIC
-        android
-        GLESv3
-    PRIVATE
-        log
+        glad::glad
+        glfw
+        stb::stb
 )
 
 #=============================

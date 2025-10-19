@@ -5,10 +5,17 @@
 namespace ge {
 
 /**
- * IOSystem implementation for reading 3D models through the Qt resource system.
+ * IOSystem implementation for reading 3D models.
  */
 class AssimpIOSystem : public Assimp::IOSystem {
  public:
+    /**
+     * Creates a new AssimpIOSystem instance.
+     *
+     * @return New AssimpIOSystem instance.
+     */
+    static AssimpIOSystem * create();
+
     /**
      * Tests for the existence of a file at the given path.
      *
@@ -41,6 +48,9 @@ class AssimpIOSystem : public Assimp::IOSystem {
      * @return System specific directory separator.
      */
     char getOsSeparator() const override;
+
+ private:
+    AssimpIOSystem() = default;
 };
 
 }  // namespace ge

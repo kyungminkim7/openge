@@ -4,12 +4,16 @@
 
 #include <openge/AssimpIOStream.hpp>
 #include <openge/AssimpIOSystem.hpp>
-#include <openge/File.hpp>
+#include <openge/Asset.hpp>
 
 namespace ge {
 
+AssimpIOSystem * AssimpIOSystem::create() {
+    return new AssimpIOSystem{};
+}
+
 bool AssimpIOSystem::Exists(const char *filepath) const {
-    return File::exists(filepath);
+    return Asset::exists(filepath);
 }
 
 Assimp::IOStream * AssimpIOSystem::Open(const char *filepath,
