@@ -1,5 +1,6 @@
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 
+# hadolint ignore=DL3008
 RUN apt-get update && \
     apt-get install --no-install-recommends --yes \
         clang \
@@ -58,20 +59,20 @@ RUN apt-get update && \
         make \
         pipx \
         pkg-config \
-        sudo \
         uuid-dev && \
     rm -rf /var/lib/apt/lists/*
-
-RUN echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/ubuntu
-
-USER ubuntu
-WORKDIR /home/ubuntu
 
 ENV CC=clang
 ENV CXX=clang++
 
-ENV PATH="/home/ubuntu/.local/bin:$PATH"
-
 # hadolint ignore=DL3013
-RUN pipx install --pip-args='--no-cache-dir' conan cmakelang cpplint ruff && \
+RUN pipx ensurepath --force --global && \
+    pipx install --global --pip-args='--no-cache-dir' \
+        conan cmakelang cpplint ruff && \
     conan profile detect
+
+USER ubuntu
+RUN conan profile detect
+
+# hadolint ignore=DL3002
+USER root

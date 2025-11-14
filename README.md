@@ -6,8 +6,9 @@ PC or Android Studio projects.
 
 ## Build - Linux
 
-This project has been built and tested on Ubuntu 24.04.
-The easiest way to build this project is through Docker using the provided Dockerfile.
+This project has been tested on Ubuntu 24.04.
+The easiest way to build this project is using the `kyungminkim7/openge` Docker
+image or by building your image through the provided `Dockerfile`.
 
 Dependencies:
 
@@ -28,40 +29,28 @@ Build Steps:
     git clone https://github.com/kyungminkim7/openge.git
     ```
 
-3. Create a Docker image for building the project:
-
-    ```bash
-    docker build -t openge openge
-    ```
-
 4. Run Docker container for building projects:
 
     ```bash
     docker run --rm -it \
         -v $(pwd):$(pwd) -w $(pwd) \
-        -e CONAN_HOME=$(pwd)/.conan2 \
-        openge
+        --user $(id -u):$(id -g) \
+        kyungminkim7/openge
     ```
 
-5. Generate Conan profile:
-
-    ```bash
-    conan profile detect
-    ```
-
-6. Create Conan package:
+5. Create Conan package:
 
     ```bash
     conan create openge --build=missing
     ```
 
 7. The `openge` Conan package can then be used for other Conan projects in
-the same workspace.
+   the same workspace.
     - Example `conanfile.txt` recipe template:
 
         ```ini
         [requires]
-        openge/<VERSION>
+        openge/VERSION
 
         [generators]
         CMakeDeps
