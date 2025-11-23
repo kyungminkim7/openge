@@ -1,3 +1,6 @@
+#include <memory>
+#include <utility>
+
 #include <openge/Component.hpp>
 
 namespace ge {

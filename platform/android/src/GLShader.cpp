@@ -1,6 +1,7 @@
+#include <spdlog/spdlog.h>
+
 #include <openge/Asset.hpp>
 #include <openge/GLShader.hpp>
-#include <spdlog/spdlog.h>
 
 namespace ge {
 

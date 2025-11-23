@@ -1,5 +1,8 @@
-#include <openge/InputSystem.hpp>
+#pragma once
+
 #include <utility>
+
+#include <openge/InputSystem.hpp>
 
 namespace ge {
 

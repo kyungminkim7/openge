@@ -62,10 +62,10 @@ namespace ge {
 Skybox::Skybox(const char *front, const char *back,
                const char *left, const char *right,
                const char *up, const char *down) :
-    shaderProgram(RenderPipeline::getShaderProgram(RenderPipeline::Program::Skybox)),
+    shaderProgram(RenderPipeline::getShaderProgram(
+                    RenderPipeline::Program::Skybox)),
     vertexArray(),
     vertexBuffer(GLBuffer::Type::VertexBuffer) {
-
     shaderProgram->bind();
     uploadVertexData();
     uploadTexture(front, back, left, right, up, down);
@@ -106,7 +106,7 @@ void Skybox::uploadTexture(const char *front, const char *back,
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);  
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 }
 
 void Skybox::uploadVertexData() {

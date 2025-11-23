@@ -26,8 +26,7 @@ class InputSystemListener: public testing::Test {
         ge::InputSystem::addListener<TestEvent>(
             [this](auto listener){ onTestEvent = std::move(listener); },
             &key,
-            [this](const auto &){ listenerCalled = true; }
-        );
+            [this](const auto &){ listenerCalled = true; });
     }
 
     const int key{42};
@@ -56,8 +55,7 @@ TEST_F(InputSystemListener, PassesEventDataToListener) {
         &key,
         [this](const auto &event){
             ASSERT_THAT(event.data, Eq(4));
-        }
-    );
+        });
 
     onTestEvent({4});
 }
@@ -80,14 +78,12 @@ TEST_F(InputSystemListeners, InvokesAllListenersUponEventBeingTriggered) {
     ge::InputSystem::addListener<TestEvent>(
         registerListener,
         &key1,
-        [this](const auto &){ listener1Called = true; }
-    );
+        [this](const auto &){ listener1Called = true; });
 
     ge::InputSystem::addListener<TestEvent>(
         registerListener,
         &key2,
-        [this](const auto &){ listener2Called = true; }
-    );
+        [this](const auto &){ listener2Called = true; });
 
     onTestEvent({});
 
@@ -105,16 +101,14 @@ TEST_F(InputSystemListeners, HandlesRemovingListenerDuringEventDispatch) {
         &key1,
         [this](const auto &){
             ge::InputSystem::removeListener<TestEvent>(&key1);
-        }
-    );
+        });
 
     ge::InputSystem::addListener<TestEvent>(
         registerListener,
         &key2,
         [this](const auto &){
             ge::InputSystem::removeListener<TestEvent>(&key2);
-        }
-    );
+        });
 
     onTestEvent({});
 }
