@@ -29,7 +29,7 @@ Build Steps:
     git clone https://github.com/kyungminkim7/openge.git
     ```
 
-4. Run Docker container for building projects:
+3. Run Docker container for building projects:
 
     ```bash
     docker run --rm -it \
@@ -38,13 +38,13 @@ Build Steps:
         kyungminkim7/openge
     ```
 
-5. Create Conan package:
+4. Create Conan package:
 
     ```bash
     conan create openge --build=missing
     ```
 
-7. The `openge` Conan package can then be used for other Conan projects in
+5. The `openge` Conan package can then be used for other Conan projects in
    the same workspace.
     - Example `conanfile.txt` recipe template:
 
