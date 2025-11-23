@@ -1,5 +1,5 @@
 ---
-name: Docker QA
+name: Docker
 
 on:
   pull_request:
@@ -10,13 +10,13 @@ jobs:
   hadolint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5.0.0
+      - uses: actions/checkout@v6
       - uses: hadolint/hadolint-action@v3.3.0
 
-  build:
+  docker-build:
     runs-on: ubuntu-latest
     steps:
       - name: Build Docker Image
-        uses: docker/build-push-action@v6.18.0
+        uses: docker/build-push-action@v6
         with:
           tags: kyungminkim7/openge:latest
