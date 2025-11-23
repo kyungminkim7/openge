@@ -1,3 +1,7 @@
+#include <memory>
+#include <string>
+#include <utility>
+
 #include <openge/ColorConstants.hpp>
 #include <openge/Material.hpp>
 #include <openge/RenderPipeline.hpp>

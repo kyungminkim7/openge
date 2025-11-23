@@ -1,10 +1,11 @@
+#include <spdlog/spdlog.h>
+
 #include <fstream>
 #include <iterator>
 #include <string>
 
 #include <openge/Exception.hpp>
 #include <openge/GLShader.hpp>
-#include <spdlog/spdlog.h>
 
 namespace ge {
 

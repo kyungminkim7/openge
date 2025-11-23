@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <ios>
 #include <sstream>
+#include <string>
 #include <system_error>
 #include <type_traits>
 #include <vector>

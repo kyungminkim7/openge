@@ -1,9 +1,13 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <memory>
 #include <numeric>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include <assimp/Importer.hpp>
 #include <glm/vec3.hpp>

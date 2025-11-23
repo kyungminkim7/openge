@@ -1,3 +1,5 @@
+#include <string>
+
 #include <openge/Exception.hpp>
 
 namespace ge {

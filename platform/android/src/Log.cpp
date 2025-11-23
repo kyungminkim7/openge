@@ -1,6 +1,7 @@
 #include <android/log.h>
 
 #include <ios>
+#include <string>
 #include <system_error>
 
 #include <openge/Log.hpp>

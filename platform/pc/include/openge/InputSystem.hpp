@@ -2,8 +2,9 @@
 
 #include <functional>
 #include <memory>
-#include <openge/Window.hpp>
 #include <utility>
+
+#include <openge/Window.hpp>
 
 namespace ge {
 

@@ -1,5 +1,7 @@
 #include <GLFW/glfw3.h>
+#include <spdlog/spdlog.h>
 
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -7,7 +9,6 @@
 #include <openge/KeyEvent.hpp>
 #include <openge/OpenGL.hpp>
 #include <openge/Window.hpp>
-#include <spdlog/spdlog.h>
 
 namespace {
 

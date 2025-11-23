@@ -1,3 +1,6 @@
+#include <string>
+#include <vector>
+
 #include "openge/ImageDecoder.hpp"
 
 namespace ge {

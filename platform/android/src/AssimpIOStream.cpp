@@ -1,3 +1,4 @@
+#include <string>
 #include <system_error>
 
 #include <openge/AssimpIOStream.hpp>

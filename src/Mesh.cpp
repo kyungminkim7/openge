@@ -1,5 +1,7 @@
+#include <memory>
 #include <stdexcept>
 #include <utility>
+#include <vector>
 
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/mat3x3.hpp>
@@ -47,7 +49,6 @@ Mesh::Mesh(std::shared_ptr<GameObject> gameObject,
     elementBuffer(ge::GLBuffer::Type::IndexBuffer),
     renderMode(getRenderMode(meshData.topology)),
     material(std::move(material)) {
-
     vertexArray.create();
 
     vertexBuffer.create();
