@@ -1,7 +1,7 @@
 ---
 name: CI
 
-on:
+on:  # yamllint disable-line rule:truthy
   pull_request:
     paths_ignore:
       - Dockerfile
@@ -23,3 +23,9 @@ jobs:
       - uses: DavidAnson/markdownlint-cli2-action@v21
         with:
           globs: '**/*.md'
+
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: yamllint --strict .
