@@ -10,10 +10,7 @@ class OpenGERecipe(ConanFile):
 
     settings = "os", "compiler", "build_type", "arch"
 
-    options = {
-        "shared": [True, False],
-        "fPIC": [True, False]
-    }
+    options = {"shared": [True, False], "fPIC": [True, False]}
 
     default_options = {
         "shared": False,
@@ -21,15 +18,20 @@ class OpenGERecipe(ConanFile):
         "glad*:gl_profile": "core",
     }
 
-    exports_sources = "CMakeLists.txt", \
-        "src/*", "include/*", "platform/*", "shader/*", \
-        "mock/*", "test/*"
+    exports_sources = (
+        "CMakeLists.txt",
+        "src/*",
+        "include/*",
+        "platform/*",
+        "shader/*",
+        "mock/*",
+        "test/*",
+    )
 
     def set_version(self):
         git = Git(self, self.recipe_folder)
-        tag = git.run('describe --tags')
-        self.version = \
-            '.'.join(tag.split('-')[:-1]) if '-' in tag else f"{tag}.0"
+        tag = git.run("describe --tags")
+        self.version = ".".join(tag.split("-")[:-1]) if "-" in tag else f"{tag}.0"
 
     def validate(self):
         check_min_cppstd(self, "17")
@@ -93,7 +95,6 @@ class OpenGERecipe(ConanFile):
         self.cpp_info.libs = ["openge"]
 
         if self.settings.os == "Android":
-            self.cpp_info.system_libs = ["GLESv3", "android",
-                                         "jnigraphics", "log"]
+            self.cpp_info.system_libs = ["GLESv3", "android", "jnigraphics", "log"]
         else:
             self.cpp_info.defines.append("GLFW_INCLUDE_NONE")
