@@ -4,8 +4,6 @@ FROM ubuntu:26.04
 RUN apt-get update && \
     apt-get install --no-install-recommends --yes \
         clang \
-        clang-format \
-        clang-tidy \
         cmake \
         git \
         libfontenc-dev \
@@ -59,7 +57,8 @@ RUN apt-get update && \
         make \
         pipx \
         pkg-config \
-        uuid-dev && \
+        uuid-dev \
+        valgrind && \
     rm -rf /var/lib/apt/lists/*
 
 ENV CC=clang
@@ -68,7 +67,7 @@ ENV CXX=clang++
 # hadolint ignore=DL3013
 RUN pipx ensurepath --force --global && \
     pipx install --global --pip-args='--no-cache-dir' \
-        conan cmakelang cpplint && \
+        conan clang-tidy && \
     conan profile detect
 
 USER ubuntu
