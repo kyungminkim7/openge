@@ -68,7 +68,7 @@ ENV CXX=clang++
 # hadolint ignore=DL3013
 RUN pipx ensurepath --force --global && \
     pipx install --global --pip-args='--no-cache-dir' \
-        conan cmakelang cpplint ruff && \
+        conan cmakelang cpplint && \
     conan profile detect
 
 USER ubuntu
