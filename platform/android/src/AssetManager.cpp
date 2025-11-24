@@ -4,24 +4,20 @@
 
 namespace {
 
-AAssetManager *assetManager = nullptr;
+AAssetManager* assetManager = nullptr;
 
 }  // namespace
 
 namespace ge {
 namespace AssetManager {
 
-void create(JNIEnv *env, jobject jAssetManager) {
-    assetManager = AAssetManager_fromJava(env, jAssetManager);
+void create(JNIEnv* env, jobject jAssetManager) {
+  assetManager = AAssetManager_fromJava(env, jAssetManager);
 }
 
-void destroy() {
-    assetManager = nullptr;
-}
+void destroy() { assetManager = nullptr; }
 
-AAssetManager *get() {
-    return assetManager;
-}
+AAssetManager* get() { return assetManager; }
 
 }  // namespace AssetManager
 }  // namespace ge

@@ -13,22 +13,22 @@ using testing::NotNull;
 using testing::SizeIs;
 
 TEST(GetComponent, ReturnsNullptrIfComponentIsNotAttached) {
-    auto gameObject = GameObject::create();
-    ASSERT_THAT(gameObject->getComponent<Component>(), IsNull());
+  auto gameObject = GameObject::create();
+  ASSERT_THAT(gameObject->getComponent<Component>(), IsNull());
 }
 
 TEST(AGameObject, HasATransform) {
-    auto gameObject = GameObject::create();
-    ASSERT_THAT(gameObject->getComponent<Transform>(), NotNull());
+  auto gameObject = GameObject::create();
+  ASSERT_THAT(gameObject->getComponent<Transform>(), NotNull());
 }
 
 TEST(GetComponents, ReturnsEmptyListIfComponentsAreNotAttached) {
-    auto gameObject = GameObject::create();
-    ASSERT_THAT(gameObject->getComponents<Component>(), IsEmpty());
+  auto gameObject = GameObject::create();
+  ASSERT_THAT(gameObject->getComponents<Component>(), IsEmpty());
 }
 
 TEST(GetComponents, ReturnsListOfAttachedComponents) {
-    auto gameObject = GameObject::create();
-    gameObject->addComponent<Component>();
-    ASSERT_THAT(gameObject->getComponents<Component>(), SizeIs(1));
+  auto gameObject = GameObject::create();
+  gameObject->addComponent<Component>();
+  ASSERT_THAT(gameObject->getComponents<Component>(), SizeIs(1));
 }

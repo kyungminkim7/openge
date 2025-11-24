@@ -14,7 +14,7 @@ namespace Window {
  *
  * @param keyEvent Key event.
  */
-using KeyListener = std::function<void(const KeyEvent &)>;
+using KeyListener = std::function<void(const KeyEvent&)>;
 
 /**
  * Adds a key listener for the window.
@@ -30,8 +30,7 @@ void addListener(KeyListener listener);
  * @param height Window height in screen coordinates.
  * @param title Window title.
  */
-void create(unsigned int width, unsigned int height,
-            const std::string &title);
+void create(unsigned int width, unsigned int height, const std::string& title);
 
 /**
  * Closes the window.

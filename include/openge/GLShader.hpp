@@ -9,49 +9,49 @@ namespace ge {
  */
 class GLShader {
  public:
-    /**
-     * Shader type.
-     */
-    enum class ShaderTypeBit : GLenum {
-        Vertex = GL_VERTEX_SHADER,
-        Fragment = GL_FRAGMENT_SHADER,
-        Geometry = GL_GEOMETRY_SHADER,
-    };
+  /**
+   * Shader type.
+   */
+  enum class ShaderTypeBit : GLenum {
+    Vertex = GL_VERTEX_SHADER,
+    Fragment = GL_FRAGMENT_SHADER,
+    Geometry = GL_GEOMETRY_SHADER,
+  };
 
-    /**
-     * Constructs a new shader object.
-     *
-     * @param type Shader type.
-     */
-    explicit GLShader(ShaderTypeBit type);
+  /**
+   * Constructs a new shader object.
+   *
+   * @param type Shader type.
+   */
+  explicit GLShader(ShaderTypeBit type);
 
-    ~GLShader();
+  ~GLShader();
 
-    /**
-     * Sets the source code for this shader and compiles it.
-     *
-     * @param source Source code.
-     * @exception BuildError Failed to compile shader.
-     */
-    void compileSourceCode(const char *source);
+  /**
+   * Sets the source code for this shader and compiles it.
+   *
+   * @param source Source code.
+   * @exception BuildError Failed to compile shader.
+   */
+  void compileSourceCode(const char* source);
 
-    /**
-     * Sets the source code for this shader and compiles it.
-     *
-     * @param filepath Source code filepath.
-     * @exception BuildError Failed to compile shader.
-     */
-    void compileSourceFile(const char *filepath);
+  /**
+   * Sets the source code for this shader and compiles it.
+   *
+   * @param filepath Source code filepath.
+   * @exception BuildError Failed to compile shader.
+   */
+  void compileSourceFile(const char* filepath);
 
-    /**
-     * Returns the OpenGL identifier associated with this shader.
-     *
-     * @return Shader ID.
-     */
-    GLuint shaderId() const;
+  /**
+   * Returns the OpenGL identifier associated with this shader.
+   *
+   * @return Shader ID.
+   */
+  GLuint shaderId() const;
 
  private:
-    GLuint shader;
+  GLuint shader;
 };
 
 }  // namespace ge

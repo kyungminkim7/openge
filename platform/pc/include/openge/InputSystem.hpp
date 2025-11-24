@@ -2,9 +2,8 @@
 
 #include <functional>
 #include <memory>
-#include <utility>
-
 #include <openge/Window.hpp>
+#include <utility>
 
 namespace ge {
 
@@ -18,9 +17,9 @@ namespace InputSystem {
  * @param key The key identifying the listener (typically a Component).
  * @param listener The listener to add.
  */
-template<typename Event, typename T, typename Listener>
-inline void addListener(const T *key, Listener listener) {
-    addListener<Event>(&ge::Window::addListener, key, std::move(listener));
+template <typename Event, typename T, typename Listener>
+inline void addListener(const T* key, Listener listener) {
+  addListener<Event>(&ge::Window::addListener, key, std::move(listener));
 }
 
 }  // namespace InputSystem

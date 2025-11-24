@@ -10,22 +10,22 @@ namespace ge {
  */
 class Error : public std::exception {
  public:
-    /**
-     * Constructs an Error with the given message.
-     *
-     * @param whatArg Explanatory error message.
-     */
-    explicit Error(const std::string &whatArg);
+  /**
+   * Constructs an Error with the given message.
+   *
+   * @param whatArg Explanatory error message.
+   */
+  explicit Error(const std::string& whatArg);
 
-    /**
-     * Returns the explanatory error message.
-     * 
-     * @return Explanatory error message.
-     */
-    const char * what() const noexcept override;
+  /**
+   * Returns the explanatory error message.
+   *
+   * @return Explanatory error message.
+   */
+  const char* what() const noexcept override;
 
  private:
-    std::string whatArg;
+  std::string whatArg;
 };
 
 /**
@@ -33,12 +33,12 @@ class Error : public std::exception {
  */
 class BuildError : public Error {
  public:
-    /**
-     * Constructs a BuildError with the given message.
-     *
-     * @param whatArg Explanatory error message.
-     */
-    explicit BuildError(const std::string &whatArg);
+  /**
+   * Constructs a BuildError with the given message.
+   *
+   * @param whatArg Explanatory error message.
+   */
+  explicit BuildError(const std::string& whatArg);
 };
 
 /**
@@ -46,12 +46,12 @@ class BuildError : public Error {
  */
 class LoadError : public Error {
  public:
-    /**
-     * Constructs a LoadError with the given message.
-     *
-     * @param whatArg Explanatory error message.
-     */
-    explicit LoadError(const std::string &whatArg);
+  /**
+   * Constructs a LoadError with the given message.
+   *
+   * @param whatArg Explanatory error message.
+   */
+  explicit LoadError(const std::string& whatArg);
 };
 
 /**
@@ -59,12 +59,12 @@ class LoadError : public Error {
  */
 class WindowError : public Error {
  public:
-    /**
-     * Constructs a WindowError with the given message.
-     *
-     * @param whatArg Explanatory error message.
-     */
-    explicit WindowError(const std::string &whatArg);
+  /**
+   * Constructs a WindowError with the given message.
+   *
+   * @param whatArg Explanatory error message.
+   */
+  explicit WindowError(const std::string& whatArg);
 };
 
 }  // namespace ge

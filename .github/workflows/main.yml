@@ -11,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
       - uses: astral-sh/ruff-action@v3
+
       - uses: astral-sh/ruff-action@v3
         with:
           args: format --diff
@@ -20,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+
       - uses: DavidAnson/markdownlint-cli2-action@v21
         with:
           globs: '**/*.md'
@@ -28,19 +31,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - run: yamllint --strict .
+
+      - name: Lint YAML files
+        run: yamllint --strict .
 
   cpplint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - run: pipx install cpplint
-      - run: cpplint --recursive .
+
+      - name: Install cpplint
+        run: pipx install cpplint
+
+      - name: Lint C/C++ files
+        run: cpplint --recursive .
 
   cmakelang:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - run: pipx install cmakelang
-      - run: find -name CMakeLists.txt -exec cmake-lint '{}' '+'
-      - run: find -name CMakeLists.txt -exec cmake-format --check '{}' '+'
+
+      - name: Install cmakelang
+        run: pipx install cmakelang
+
+      - name: Lint CMake files
+        run: find -name CMakeLists.txt -exec cmake-lint '{}' '+'
+
+      - name: Check formatting of CMake files
+        run: find -name CMakeLists.txt -exec cmake-format --check '{}' '+'
+
+  clang-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install clang-format
+        run: pipx install clang-format
+
+      - name: Check formatting of C/C++ files
+        run: |
+          find \( -name '*.[ch]' -o -name '*.[ch]pp' \) -print0 \
+            | xargs -0 clang-format --Werror --dry-run --verbose
