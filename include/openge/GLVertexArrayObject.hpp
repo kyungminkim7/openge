@@ -9,27 +9,27 @@ namespace ge {
  */
 class GLVertexArrayObject {
  public:
-    ~GLVertexArrayObject();
+  ~GLVertexArrayObject();
 
-    /**
-     * Creates the underlying OpenGL vertex array object.
-     */
-    void create();
+  /**
+   * Creates the underlying OpenGL vertex array object.
+   */
+  void create();
 
-    /**
-     * Binds the vertex array object to the OpenGL
-     * binding point.
-     */
-    void bind();
+  /**
+   * Binds the vertex array object to the OpenGL
+   * binding point.
+   */
+  void bind();
 
-    /**
-     * Unbinds the vertex array object by binding
-     * the default vertex array object (id = 0).
-     */
-    void release();
+  /**
+   * Unbinds the vertex array object by binding
+   * the default vertex array object (id = 0).
+   */
+  void release();
 
  private:
-    GLuint vao;
+  GLuint vao;
 };
 
 }  // namespace ge

@@ -13,42 +13,42 @@ class GameObject;
 namespace ge::RenderPipeline {
 
 namespace Attribute {
-extern const char *POSITION;
-extern const char *NORMAL;
-extern const char *TEXTURE_COORDINATE;
+extern const char* POSITION;
+extern const char* NORMAL;
+extern const char* TEXTURE_COORDINATE;
 }  // namespace Attribute
 
 namespace Uniform {
-extern const char *MODEL;
-extern const char *VIEW;
-extern const char *PROJECTION;
-extern const char *NORMAL;
+extern const char* MODEL;
+extern const char* VIEW;
+extern const char* PROJECTION;
+extern const char* NORMAL;
 
-extern const char *VIEW_POSITION;
+extern const char* VIEW_POSITION;
 
-extern const char *SKYBOX_TEXTURE;
+extern const char* SKYBOX_TEXTURE;
 extern const int SKYBOX_TEXTURE_UNIT;
 
 namespace Material {
-extern const char *DIFFUSE_TEXTURE;
+extern const char* DIFFUSE_TEXTURE;
 extern const int DIFFUSE_TEXTURE_UNIT;
 
-extern const char *SPECULAR_TEXTURE;
+extern const char* SPECULAR_TEXTURE;
 extern const int SPECULAR_TEXTURE_UNIT;
 
-extern const char *SHINE;
+extern const char* SHINE;
 
-extern const char *COLOR;
+extern const char* COLOR;
 }  // namespace Material
 
 namespace Light {
-extern const char *AMBIENT;
+extern const char* AMBIENT;
 }  // namespace Light
 
 namespace DirectionalLight {
-extern const char * COUNT;
-extern const std::vector<const char *> DIRECTION;
-extern const std::vector<const char *> COLOR;
+extern const char* COUNT;
+extern const std::vector<const char*> DIRECTION;
+extern const std::vector<const char*> COLOR;
 }  // namespace DirectionalLight
 
 }  // namespace Uniform
@@ -56,10 +56,7 @@ extern const std::vector<const char *> COLOR;
 /**
  * Built-in shader program.
  */
-enum class Program {
-    Standard,
-    Skybox
-};
+enum class Program { Standard, Skybox };
 
 /**
  * Destroys all built-in shader programs.
@@ -79,6 +76,6 @@ std::shared_ptr<GLShaderProgram> getShaderProgram(Program program);
  *
  * @param camera Camera.
  */
-void uploadCamera(GameObject *camera);
+void uploadCamera(GameObject* camera);
 
 }  // namespace ge::RenderPipeline

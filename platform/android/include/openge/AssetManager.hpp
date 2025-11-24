@@ -8,9 +8,9 @@
 namespace ge {
 namespace AssetManager {
 
-void create(JNIEnv *env, jobject jAssetManager);
+void create(JNIEnv* env, jobject jAssetManager);
 void destroy();
-AAssetManager *get();
+AAssetManager* get();
 
 }  // namespace AssetManager
 }  // namespace ge

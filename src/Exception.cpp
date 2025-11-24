@@ -1,19 +1,16 @@
-#include <string>
-
 #include <openge/Exception.hpp>
+#include <string>
 
 namespace ge {
 
-Error::Error(const std::string &whatArg) : whatArg(whatArg) {}
+Error::Error(const std::string& whatArg) : whatArg(whatArg) {}
 
-const char * Error::what() const noexcept {
-    return whatArg.c_str();
-}
+const char* Error::what() const noexcept { return whatArg.c_str(); }
 
-BuildError::BuildError(const std::string &whatArg) : Error(whatArg) {}
+BuildError::BuildError(const std::string& whatArg) : Error(whatArg) {}
 
-LoadError::LoadError(const std::string &whatArg) : Error(whatArg) {}
+LoadError::LoadError(const std::string& whatArg) : Error(whatArg) {}
 
-WindowError::WindowError(const std::string &whatArg) : Error(whatArg) {}
+WindowError::WindowError(const std::string& whatArg) : Error(whatArg) {}
 
 }  // namespace ge

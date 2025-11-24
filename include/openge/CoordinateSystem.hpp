@@ -14,41 +14,40 @@ namespace ge {
  */
 class CoordinateSystem {
  public:
-    /**
-     * Forward direction.
-     */
-    static const glm::vec3 FORWARD;
+  /**
+   * Forward direction.
+   */
+  static const glm::vec3 FORWARD;
 
-    /**
-     * Backwards direction.
-     */
-    static const glm::vec3 BACK;
+  /**
+   * Backwards direction.
+   */
+  static const glm::vec3 BACK;
 
+  /**
+   * Left direction.
+   */
+  static const glm::vec3 LEFT;
 
-    /**
-     * Left direction.
-     */
-    static const glm::vec3 LEFT;
+  /**
+   * Right direction.
+   */
+  static const glm::vec3 RIGHT;
 
-    /**
-     * Right direction.
-     */
-    static const glm::vec3 RIGHT;
+  /**
+   * Upwards direction.
+   */
+  static const glm::vec3 UP;
 
-    /**
-     * Upwards direction.
-     */
-    static const glm::vec3 UP;
+  /**
+   * Downwards direction.
+   */
+  static const glm::vec3 DOWN;
 
-    /**
-     * Downwards direction.
-     */
-    static const glm::vec3 DOWN;
-
-    /**
-     * Origin coordinate.
-     */
-    static const glm::vec3 ORIGIN;
+  /**
+   * Origin coordinate.
+   */
+  static const glm::vec3 ORIGIN;
 };
 
 }  // namespace ge
