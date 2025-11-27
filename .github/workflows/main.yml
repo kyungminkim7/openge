@@ -72,3 +72,29 @@ jobs:
         run: |
           find \( -name '*.[ch]' -o -name '*.[ch]pp' \) -print0 \
             | xargs -0 clang-format --Werror --dry-run --verbose
+
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: kyungminkim7/openge
+      options: --user 1001:1001
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Create profile
+        run: conan profile detect
+
+      - name: Install dependencies
+        run: conan install . --build=missing
+
+      - name: Build project
+        env:
+          CFLAGS: "-Wall -Wextra -Wpedantic -Werror"
+          CXXFLAGS: "-Wall -Wextra -Wpedantic -Werror"
+          CTEST_OUTPUT_ON_FAILURE: 1
+        run: conan build .
+
+      - name: Create package
+        run: conan create .
