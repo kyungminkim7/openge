@@ -6,7 +6,7 @@
 
 namespace ge {
 
-struct GameObject;
+class GameObject;
 
 /**
  * Base class for everything attached to a GameObject.

@@ -17,7 +17,8 @@ template <typename Event, typename RegisterListener, typename T,
           typename Listener>
 void addListener(RegisterListener registerListener, const T* key,
                  Listener listener) {
-  static auto init = [registerListener = std::move(registerListener)]() {
+  [[maybe_unused]] static auto init = [registerListener =
+                                           std::move(registerListener)]() {
     registerListener([](const Event& event) {
       for (auto iter = std::begin(listeners<T, Event>);
            iter != std::end(listeners<T, Event>);) {

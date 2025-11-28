@@ -50,7 +50,7 @@ TEST_F(InputSystemListener, DoesNotInvokeRemovedListener) {
 TEST_F(InputSystemListener, PassesEventDataToListener) {
   ge::InputSystem::addListener<TestEvent>(
       [this](auto listener) { onTestEvent = std::move(listener); }, &key,
-      [this](const auto& event) { ASSERT_THAT(event.data, Eq(4)); });
+      [](const auto& event) { ASSERT_THAT(event.data, Eq(4)); });
 
   onTestEvent({4});
 }
