@@ -1,65 +1,75 @@
 ---
-variables:
-  CONAN_REPO: https://devops.home.arpa/nexus/repository/conan
-
 stages:
   - lint
-  - build
-  - dynamic-analysis
-  - deploy
+  # - build
+  # - dynamic-analysis
+  # - deploy
 
 # ----------------------------
 # Lint
 # ----------------------------
-
-lint-cmake:
+hadolint:
   stage: lint
-  image: kyungminkim7/cmakelang:0.6.13
+  image: hadolint/hadolint:latest-alpine
   script:
-    - find -name CMakeLists.txt -exec cmake-lint '{}' '+'
+    - >
+      hadolint --format gitlab_codeclimate Dockerfile |
+        tee hadolint-report.json
+  artifacts:
+    reports:
+      codequality: hadolint-report.json
+  rules:
+    - changes:
+        - Dockerfile
 
-lint-cpp:
-  stage: lint
-  image: kyungminkim7/cpplint:2.0.0
-  script:
-    - cpplint --recursive .
+# lint-cmake:
+#   stage: lint
+#   image: kyungminkim7/cmakelang:0.6.13
+#   script:
+#     - find -name CMakeLists.txt -exec cmake-lint '{}' '+'
 
-lint-markdown:
-  stage: lint
-  image: pipelinecomponents/markdownlint-cli2:0.13.0
-  script:
-    - markdownlint-cli2 '**/*.md'
+# lint-cpp:
+#   stage: lint
+#   image: kyungminkim7/cpplint:2.0.0
+#   script:
+#     - cpplint --recursive .
 
-lint-python:
-  stage: lint
-  image: pipelinecomponents/flake8:0.17.0
-  script:
-    - flake8
+# lint-markdown:
+#   stage: lint
+#   image: pipelinecomponents/markdownlint-cli2:0.13.0
+#   script:
+#     - markdownlint-cli2 '**/*.md'
 
-lint-yaml:
-  stage: lint
-  image: pipelinecomponents/yamllint:0.33.0
-  script:
-    - yamllint --strict .gitlab-ci.yml
+# lint-python:
+#   stage: lint
+#   image: pipelinecomponents/flake8:0.17.0
+#   script:
+#     - flake8
+
+# lint-yaml:
+#   stage: lint
+#   image: pipelinecomponents/yamllint:0.33.0
+#   script:
+#     - yamllint --strict .gitlab-ci.yml
 
 # ----------------------------
 # Build
 # ----------------------------
 
-build-openge:
-  stage: build
-  image: kyungminkim7/conan:gcc11
-  variables:
-    CTEST_OUTPUT_ON_FAILURE: 1
-    CXXFLAGS: '-Wall -Wextra -Wpedantic -Werror'
-  script:
-    - conan remote add --insecure nexus $CONAN_REPO
-    - conan build --remote nexus .
-    - conan export-pkg .
-  artifacts:
-    paths:
-      - build/Release/test/openge_test
-      - build/Release/html/
+# build-openge:
+#   stage: build
+#   image: kyungminkim7/conan:gcc11
+#   variables:
+#     CTEST_OUTPUT_ON_FAILURE: 1
+#     CXXFLAGS: '-Wall -Wextra -Wpedantic -Werror'
+#   script:
+#     - conan remote add --insecure nexus $CONAN_REPO
+#     - conan build --remote nexus .
+#     - conan export-pkg .
+#   artifacts:
+#     paths:
+#       - build/Release/test/openge_test
+#       - build/Release/html/
 
 # ----------------------------
 # Dynamic Analysis
@@ -80,30 +90,30 @@ build-openge:
 # Deploy
 # ----------------------------
 
-deploy-documentation:
-  stage: deploy
-  image: kyungminkim7/conan:gcc11
-  variables:
-    DOXYGEN_REPO: https://devops.home.arpa/nexus/repository/doxygen
-  dependencies:
-    - build-openge
-  script:
-    - PROJECT_VERSION=$(conan inspect . | awk '/version/{ print $NF }')
-    - BASE_URL=${DOXYGEN_REPO}/${CI_PROJECT_NAME}/${PROJECT_VERSION}
-    - find build/Release/html -type f -exec
-        curl --insecure --fail --user ${NEXUS_USER}:${NEXUS_PASSWORD}
-             --upload-file '{}' ${BASE_URL}/'{}' ';'
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+# deploy-documentation:
+#   stage: deploy
+#   image: kyungminkim7/conan:gcc11
+#   variables:
+#     DOXYGEN_REPO: https://devops.home.arpa/nexus/repository/doxygen
+#   dependencies:
+#     - build-openge
+#   script:
+#     - PROJECT_VERSION=$(conan inspect . | awk '/version/{ print $NF }')
+#     - BASE_URL=${DOXYGEN_REPO}/${CI_PROJECT_NAME}/${PROJECT_VERSION}
+#     - find build/Release/html -type f -exec
+#         curl --insecure --fail --user ${NEXUS_USER}:${NEXUS_PASSWORD}
+#              --upload-file '{}' ${BASE_URL}/'{}' ';'
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
-deploy-openge:
-  stage: deploy
-  image: kyungminkim7/conan:gcc11
-  dependencies: []
-  script:
-    - conan remote add --insecure nexus $CONAN_REPO
-    - conan remote login --password ${NEXUS_PASSWORD} nexus ${NEXUS_USER}
-    - conan create --remote nexus .
-    - conan upload --remote nexus --confirm 'openge/*'
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+# deploy-openge:
+#   stage: deploy
+#   image: kyungminkim7/conan:gcc11
+#   dependencies: []
+#   script:
+#     - conan remote add --insecure nexus $CONAN_REPO
+#     - conan remote login --password ${NEXUS_PASSWORD} nexus ${NEXUS_USER}
+#     - conan create --remote nexus .
+#     - conan upload --remote nexus --confirm 'openge/*'
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
