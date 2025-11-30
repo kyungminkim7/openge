@@ -64,7 +64,6 @@ RUN apt-get update && \
 ENV CC=clang
 ENV CXX=clang++
 
-# hadolint ignore=DL3013
 RUN pipx ensurepath --force --global && \
     pipx install --global --pip-args='--no-cache-dir' \
         conan clang-tidy && \
@@ -73,5 +72,4 @@ RUN pipx ensurepath --force --global && \
 USER ubuntu
 RUN conan profile detect
 
-# hadolint ignore=DL3002
 USER root
